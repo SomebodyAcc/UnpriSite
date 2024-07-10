@@ -1,0 +1,144 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #d2d2d2;
+  margin: 0;
+  padding: 0;
+}
+
+/*.container {
+  width: 50%;
+  margin: auto;
+  overflow: hidden;
+  padding: 2rem;
+  background: white;
+  margin-top: 5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}*/
+.container {
+  margin: 20px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card.left {
+  flex: 0.35;
+}
+
+.card.right {
+  flex: 0.6;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+button {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  background: #5cb85c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #4cae4c;
+}
+
+.error {
+  color: red;
+  margin-bottom: 1rem;
+}
+/* Navbar styling */
+.navbar {
+  background-color: #121212;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.navbar .logo img {
+  height: 35px;
+}
+
+.navbar a {
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.navbar .menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.navbar .menu a {
+  margin-left: 10px;
+}

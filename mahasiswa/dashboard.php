@@ -73,57 +73,50 @@ $result_kegiatan = $conn->query($sql_kegiatan);
             </ul>
         </nav>
     </header>
-    <div style="text-align:center">
-        <h2>Expanding Grid</h2>
-        <p>Click on the boxes below:</p>
+    <h2>Student Task Assignment and Weekly Report</h2>
+    <div class="containertbl">
+        <!-- Left Table - Task Assignment -->
+        <table id="task-table" class="task-table">
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Task Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="showReport(1)">
+                    <td>1</td>
+                    <td>Complete Chapter 1 Exercises</td>
+                </tr>
+                <tr onclick="showReport(2)">
+                    <td>2</td>
+                    <td>Write Essay on Climate Change</td>
+                </tr>
+                <!-- Add more tasks as needed -->
+            </tbody>
+        </table>
+
+        <!-- Right Table - Weekly Report -->
+        <div id="report-table" class="report-table report-hidden">
+            <h3>Weekly Report</h3>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Progress</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="report-body">
+                    <!-- Weekly report rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Single row for all boxes -->
-    <div class="row">
-        <div class="column" style="background:green;" onclick="toggleExpand('b1')">
-            Box 1
-            <div id="b1_expand" class="expandable-content" style="background:green;">
-                <span class="closebtn" onclick="toggleExpand('b1')">&times;</span>
-                <h2>Box 1</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam condimentum finibus justo. Donec euismod vehicula risus, nec luctus metus efficitur nec.</p>
-            </div>
-        </div>
-
-        <div class="column" style="background:blue;" onclick="toggleExpand('b2')">
-            Box 2
-            <div id="b2_expand" class="expandable-content" style="background:blue;">
-                <span class="closebtn" onclick="toggleExpand('b2')">&times;</span>
-                <h2>Box 2</h2>
-                <p>Integer sit amet sapien pulvinar, egestas libero non, fringilla leo. Mauris feugiat sollicitudin felis, eget varius libero mollis vitae.</p>
-            </div>
-        </div>
-
-        <div class="column" style="background:red;" onclick="toggleExpand('b3')">
-            Box 3
-            <div id="b3_expand" class="expandable-content" style="background:red;">
-                <span class="closebtn" onclick="toggleExpand('b3')">&times;</span>
-                <h2>Box 3</h2>
-                <p>Phasellus ut tincidunt nisi. Fusce posuere metus non purus malesuada, sed efficitur est lacinia. Ut et elit at magna tristique rutrum.</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function toggleExpand(id) {
-            var expandableContent = document.getElementById(id + '_expand');
-            if (expandableContent.style.right === '0%') {
-                expandableContent.style.right = '-50%';
-            } else {
-                // Hide all expandable content first
-                var expandableContents = document.getElementsByClassName('expandable-content');
-                for (var i = 0; i < expandableContents.length; i++) {
-                    expandableContents[i].style.right = '-50%';
-                }
-                // Show the clicked expandable content
-                expandableContent.style.right = '0%';
-            }
-        }
-    </script>
+    <!-- Button to Expand/Collapse Report Table -->
+    <button id="expand-btn" class="expand-btn" onclick="toggleReportTable()">Expand Report Table</button>
+    <script src="../js/script.js"></script>
 </body>
 
 

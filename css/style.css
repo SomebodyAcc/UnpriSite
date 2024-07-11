@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #d2d2d2;
+  background-color: #f6f5f5;
   margin: 0;
   padding: 0;
 }
@@ -15,21 +15,60 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }*/
 .container {
-  margin: 20px;
-  background: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.dashboard {
+/* Dashboard public Style */
+.sec1 {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+.imgcont {
+  flex: 0 0 70%; /* Lebar gambar */
+  /* margin-right: 20px; */
+}
+.imgcont img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.sec1.reverse {
+  flex-direction: row-reverse; /* Membalikkan urutan elemen di .sec1 kedua */
+}
+.content1,
+.content2,
+.content3 {
+  flex: 1; /* Memanfaatkan sisa ruang */
+}
+
+.content1 {
+  margin-right: 20px; /* Atur jarak kanan dari gambar pada content1 */
+  text-align: left; /* Arahkan teks ke kiri */
+}
+.content2 {
+  margin-left: 80px; /* Atur jarak kiri dari gambar pada content2 */
+  text-align: left; /* Arahkan teks ke kiri */
+}
+.content3 {
+  margin-right: 50px;
+}
+.btn {
+  display: inline-block;
+  background-color: #4a249d;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #7091f5;
+}
+
+/* Dashboard Public style End
 
 .card {
   background: #fff;
@@ -105,40 +144,350 @@ button:hover {
 .error {
   color: red;
   margin-bottom: 1rem;
+} */
+
+/* login style start */
+
+.containerlog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 850px;
+  width: 100%;
+  background: #fff;
+  padding: 40px 30px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  perspective: 2700px;
 }
+
+.containerlog .cover {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 50%;
+  z-index: 98;
+  transition: all 1s ease;
+  transform-origin: left;
+  transform-style: preserve-3d;
+}
+.containerlog #flip:checked ~ .cover {
+  transform: rotateY(-180deg);
+}
+.containerlog .cover .front,
+.containerlog .cover .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.cover .back {
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+.containerlog .cover::before,
+.containerlog .cover::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #7d2ae8;
+  opacity: 0, 5;
+  z-index: 12;
+}
+.containerlog .cover::after {
+  opacity: 0.3;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+}
+.containerlog .cover img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+  object-fit: cover;
+  z-index: 15;
+}
+.containerlog .cover .text {
+  position: absolute;
+  z-index: 130;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cover .text .text-1,
+.cover .text .text-2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+.cover .text .text-2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+.containerlog .forms {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+}
+.containerlog .form-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.form-content .login-form,
+.form-content .signup-form {
+  width: calc(100% / 2 - 25px);
+}
+.forms .form-content .title {
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+.forms .form-content .title:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 25px;
+  background: #7d2ae8;
+}
+.forms .signup-form .title:before {
+  width: 20px;
+}
+.forms .form-content .input-boxes {
+  margin-top: 30px;
+}
+.forms .form-content .input-box {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin: 10px 0;
+  position: relative;
+}
+.form-content .input-box input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+.form-content .input-box input:focus,
+.form-content .input-box input:valid {
+  border-color: #7d2ae8;
+}
+.form-content .input-box i {
+  position: absolute;
+  color: #7d2ae8;
+  font-size: 17px;
+}
+.forms .form-content .text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+.forms .form-content .text a {
+  text-decoration: none;
+}
+.forms .form-content .text a:hover {
+  text-decoration: underline;
+}
+.forms .form-content .button {
+  color: #fff;
+  margin-top: 40px;
+}
+.forms .form-content .button input {
+  color: #fff;
+  background: #7d2ae8;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.forms .form-content .button input:hover {
+  background: #5b13b9;
+}
+.forms .form-content label {
+  color: #5b13b9;
+  cursor: pointer;
+}
+.forms .form-content label:hover {
+  text-decoration: underline;
+}
+.forms .form-content .login-text,
+.forms .form-content .sign-up-text {
+  text-align: center;
+  margin-top: 25px;
+}
+.containerlog #flip {
+  display: none;
+}
+@media (max-width: 730px) {
+  .containerlog .cover {
+    display: none;
+  }
+  .form-content .login-form,
+  .form-content .signup-form {
+    width: 100%;
+  }
+  .form-content .signup-form {
+    display: none;
+  }
+  .containerlog #flip:checked ~ .forms .signup-form {
+    display: block;
+  }
+  .containerlog #flip:checked ~ .forms .login-form {
+    display: none;
+  }
+}
+
+/* login style end */
+
 /* Navbar styling */
 .navbar {
-  background-color: #121212;
-  overflow: hidden;
+  background-color: #4a249d; /* Warna latar belakang */
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Mengatur konten navbar ke kanan */
   align-items: center;
-  padding: 0 16px;
+  padding: 5px;
 }
-
-.navbar .logo img {
-  height: 35px;
+.logo img {
+  height: 44px; /* Sesuaikan ukuran logo */
+  padding-left: 80px;
 }
-
-.navbar a {
-  display: block;
-  color: #f2f2f2;
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-right: 40px;
   text-align: center;
+}
+
+.navbar ul li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.navbar ul li a {
+  display: block;
+  color: #fff; /* Warna teks */
+  text-decoration: none;
   padding: 14px 16px;
+}
+
+.navbar ul li a:hover {
+  background-color: #7091f5; /* Warna latar belakang saat hover */
+}
+
+/* Dropdown */
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #4a249d;
+  min-width: 160px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #fff;
+  padding: 12px 16px;
+  display: block;
   text-decoration: none;
 }
 
-.navbar a:hover {
-  background-color: #ddd;
-  color: black;
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
-.navbar .menu {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+/* Navbar Samping */
+.sidenav {
+  height: 100%; /* Sesuaikan tinggi navbar samping dengan tinggi layar */
+  width: 200px; /* Lebar navbar samping */
+  position: fixed; /* Membuat navbar tetap di posisi */
+  left: 0; /* Menempatkan navbar di samping kiri */
+  background-color: #7839ff; /* Warna latar belakang */
+  padding-top: 20px; /* Padding atas untuk jarak dari atas layar */
 }
 
-.navbar .menu a {
-  margin-left: 10px;
+.sidenav a {
+  padding: 10px 15px; /* Padding untuk link di navbar */
+  text-decoration: none;
+  font-size: 18px; /* Ukuran teks */
+  color: #fff; /* Warna teks */
+  display: block; /* Membuat link sebagai block element */
+}
+
+.sidenav a:hover {
+  background-color: #4a249d; /* Warna latar belakang saat hover */
+  color: #fff; /* Warna teks saat hover */
+}
+
+/* Footer Style */
+footer {
+  background-color: #4a249d;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: auto; /* Memastikan footer tetap di bawah */
+  width: 100%;
+}
+
+/* dashboard mahasiswa */
+.column {
+  float: left;
+  width: 50%;
+  padding: 20px;
+  text-align: center;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+  position: relative; /* Ensure relative positioning for absolute elements */
+}
+
+/* Style for the expandable content */
+.expandable-content {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: -50%; /* Initially position outside the column */
+  width: 50%; /* Take half the width of the column */
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  transition: right 0.3s ease; /* Smooth transition for expanding */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Closable button inside the expandable content */
+.closebtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
 }

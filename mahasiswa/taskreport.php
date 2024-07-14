@@ -183,7 +183,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="submit" value="Submit">
             </div>
         </form>
-
         <!-- Display Previous Kegiatan Information -->
         <!-- Add your previous activities display as needed -->
 

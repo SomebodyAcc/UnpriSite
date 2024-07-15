@@ -29,7 +29,7 @@ $sql_kegiatan = "
     FROM 
         Kegiatan k
     LEFT JOIN 
-        Dosen_KampusMerdeka dk ON k.id_dosen_KM = dk.id_dosen_KM
+        Dosen_KampusMerdeka dk ON k.id_dosen_kampusmerdeka = dk.id_dosen_kampusmerdeka
     LEFT JOIN 
         Dosen_DPL dd ON k.id_dosen_dpl = dd.id_dosen_dpl
     LEFT JOIN 
@@ -48,6 +48,7 @@ $result_kegiatan = $conn->query($sql_kegiatan);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Dashboard Mahasiswa</title>
 </head>
 
@@ -65,7 +66,6 @@ $result_kegiatan = $conn->query($sql_kegiatan);
                         <a href="https://kampusmerdeka.zendesk.com/hc/en-us/categories/6153606311577-MSIB">Magang Bersertifikat</a>
                         <a href="https://kampusmerdeka.kemdikbud.go.id/program/studi-independen">Studi Independent</a>
                         <a href="https://pmm.kampusmerdeka.kemdikbud.go.id/pages/info/program/pmm_4/">Program Pertukaran Mahasiswa</a>
-
                     </div>
                 </li>
                 <li><a href="../help.php">Butuh Bantuan?</a></li>
@@ -73,50 +73,24 @@ $result_kegiatan = $conn->query($sql_kegiatan);
             </ul>
         </nav>
     </header>
-    <h2>Student Task Assignment and Weekly Report</h2>
-    <div class="containertbl">
-        <!-- Left Table - Task Assignment -->
-        <table id="task-table" class="task-table">
-            <thead>
-                <tr>
-                    <th>Task ID</th>
-                    <th>Task Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr onclick="showReport(1)">
-                    <td>1</td>
-                    <td>Complete Chapter 1 Exercises</td>
-                </tr>
-                <tr onclick="showReport(2)">
-                    <td>2</td>
-                    <td>Write Essay on Climate Change</td>
-                </tr>
-                <!-- Add more tasks as needed -->
-            </tbody>
-        </table>
+    <main>
+        <div class="contentmahasiswa">
+            <div class="dashboardcontent">
+                <div class="baris">
+                    <div class="kolom-25">
+                        <div class="programmhs">
+                            <img src="" alt="">
+                            <h4>Kampus Mengajar</h4>
+                            <p>ID Kegiatan :</p>
+                        </div>
+                    </div>
+                    <div class="kolom75">
 
-        <!-- Right Table - Weekly Report -->
-        <div id="report-table" class="report-table report-hidden">
-            <h3>Weekly Report</h3>
-            <table class="report-table">
-                <thead>
-                    <tr>
-                        <th>Week</th>
-                        <th>Progress</th>
-                        <th>Comments</th>
-                    </tr>
-                </thead>
-                <tbody id="report-body">
-                    <!-- Weekly report rows will be dynamically added here -->
-                </tbody>
-            </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <!-- Button to Expand/Collapse Report Table -->
-    <button id="expand-btn" class="expand-btn" onclick="toggleReportTable()">Expand Report Table</button>
-    <script src="../js/script.js"></script>
+    </main>
 </body>
 
 

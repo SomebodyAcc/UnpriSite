@@ -3,150 +3,8 @@ body {
   background-color: #f6f5f5;
   margin: 0;
   padding: 0;
+  width: 99.9%;
 }
-
-/*.container {
-  width: 50%;
-  margin: auto;
-  overflow: hidden;
-  padding: 2rem;
-  background: white;
-  margin-top: 5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}*/
-.container {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Dashboard public Style */
-.sec1 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.imgcont {
-  flex: 0 0 70%; /* Lebar gambar */
-  /* margin-right: 20px; */
-}
-.imgcont img {
-  max-width: 80%;
-  height: auto;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.sec1.reverse {
-  flex-direction: row-reverse; /* Membalikkan urutan elemen di .sec1 kedua */
-}
-.content1,
-.content2,
-.content3 {
-  flex: 1; /* Memanfaatkan sisa ruang */
-}
-
-.content1 {
-  margin-right: 20px; /* Atur jarak kanan dari gambar pada content1 */
-  text-align: left; /* Arahkan teks ke kiri */
-}
-.content2 {
-  margin-left: 80px; /* Atur jarak kiri dari gambar pada content2 */
-  text-align: left; /* Arahkan teks ke kiri */
-}
-.content3 {
-  margin-right: 50px;
-}
-.btn {
-  display: inline-block;
-  background-color: #4a249d;
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-  background-color: #7091f5;
-}
-
-/* Dashboard Public style End
-
-.card {
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 1rem;
-  flex: 1;
-}
-
-.card h3 {
-  margin-top: 0;
-}
-
-.card.left {
-  flex: 0.35;
-}
-
-.card.right {
-  flex: 0.6;
-}
-
-.right-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-.table th,
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.table th {
-  background-color: #f2f2f2;
-}
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="password"],
-button {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-button {
-  background: #5cb85c;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: #4cae4c;
-}
-
-.error {
-  color: red;
-  margin-bottom: 1rem;
-} */
-
-/* login style start */
 
 .containerlog {
   position: absolute;
@@ -193,7 +51,7 @@ button:hover {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: #7d2ae8;
+  background: #7d2be9;
   opacity: 0, 5;
   z-index: 12;
 }
@@ -417,27 +275,23 @@ button:hover {
   display: block;
 }
 
-/* Navbar Samping */
-.sidenav {
-  height: 100%; /* Sesuaikan tinggi navbar samping dengan tinggi layar */
-  width: 200px; /* Lebar navbar samping */
-  position: fixed; /* Membuat navbar tetap di posisi */
-  left: 0; /* Menempatkan navbar di samping kiri */
-  background-color: #7839ff; /* Warna latar belakang */
-  padding-top: 20px; /* Padding atas untuk jarak dari atas layar */
-}
+/* Responsive styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px; /* Start collapsed on small screens */
+  }
 
-.sidenav a {
-  padding: 10px 15px; /* Padding untuk link di navbar */
-  text-decoration: none;
-  font-size: 18px; /* Ukuran teks */
-  color: #fff; /* Warna teks */
-  display: block; /* Membuat link sebagai block element */
-}
+  .sidebar.active {
+    width: 250px; /* Expand on toggle */
+  }
 
-.sidenav a:hover {
-  background-color: #4a249d; /* Warna latar belakang saat hover */
-  color: #fff; /* Warna teks saat hover */
+  .hamburger {
+    display: block; /* Show hamburger icon */
+  }
+
+  .sidebar-list li span {
+    display: none; /* Hide text by default */
+  }
 }
 
 /* Footer Style */
@@ -448,44 +302,6 @@ footer {
   padding: 10px 0;
   margin-top: auto; /* Memastikan footer tetap di bawah */
   width: 100%;
-}
-
-/* dashboard mahasiswa */
-/* Basic styling for tables and buttons */
-.containertbl {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-}
-.task-table,
-.report-table {
-  width: 48%; /* Adjust width as needed */
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-.task-table th,
-.task-table td,
-.report-table th,
-.report-table td {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-.task-table th,
-.report-table th {
-  background-color: #f2f2f2;
-}
-.report-table {
-  display: none; /* Initially hide the weekly report table */
-}
-.expand-btn {
-  padding: 10px 15px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 /* taskreport */
@@ -530,3 +346,7 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #45a049;
 }
+
+/* dashboard mahasiswa style */
+
+/*  end dashboard mahasiswa style */

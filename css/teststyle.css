@@ -1,0 +1,159 @@
+.card {
+  position: relative;
+  width: 100%; /* Expand card to 100% of its container's width */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.card-text {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  text-align: center;
+  color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+.text-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-text h2,
+.card-text p {
+  margin: 0;
+}
+
+.card-text .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #7d2be9;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.card-text .btn:hover {
+  background-color: #893ded;
+}
+
+.card2 .text-content-alt {
+  position: absolute;
+  bottom: -270px; /* Menyesuaikan letak teks di atas gambar */
+  left: 30%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #000000;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+.card2 .text-content-alt h2,
+.card2 .text-content-alt p {
+  margin: 0;
+}
+
+.card2 .text-content-alt .btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #7d2be9;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.card2 .text-content-alt .btn:hover {
+  background-color: #893ded;
+}
+
+.card3 .text-content-alt {
+  position: absolute;
+  bottom: -270px; /* Menyesuaikan letak teks di atas gambar */
+  left: 65%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #000000;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+/* Card Login Menu */
+.containermainlog-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.containermainlog {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  flex-wrap: wrap;
+}
+
+.cardmainlog {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 22%;
+  margin: 10px;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cardmainlog img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+.cardmainlog h2 {
+  margin: 10px 0;
+}
+
+.cardmainlog p {
+  color: #666;
+  margin: 10px 0;
+}
+
+.cardmainlog button {
+  background-color: #7d2be9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.cardmainlog button:hover {
+  background-color: #893ded;
+}

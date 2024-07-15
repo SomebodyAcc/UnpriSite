@@ -1,51 +1,38 @@
-<?php
-session_start();
-include('includes/db.php');
-
-// Redirect if not logged in
-if (!isset($_SESSION['nim'])) {
-    header('Location: mahasiswa/login.php');
-    exit;
-}
-
-// Get mahasiswa info
-$nim = $_SESSION['nim'];
-$sql_mahasiswa = "SELECT * FROM Mahasiswa WHERE nim='$nim'";
-$result_mahasiswa = $conn->query($sql_mahasiswa);
-$mahasiswa = $result_mahasiswa->fetch_assoc();
-
-// Get kegiatan mahasiswa
-$sql_kegiatan = "
-    SELECT 
-        k.id_kegiatan, 
-        k.deskripsi, 
-        k.tanggal,
-        k.status_dosen_kampusmerdeka, 
-        k.status_dosen_dpl, 
-        k.status_kaprodi, 
-        dk.nama AS nama_dosen_kampusmerdeka, 
-        dd.nama AS nama_dosen_dpl, 
-        kp.nama AS nama_kaprodi
-    FROM 
-        Kegiatan k
-    LEFT JOIN 
-        Dosen_KampusMerdeka dk ON k.id_dosen_KM = dk.id_dosen_KM
-    LEFT JOIN 
-        Dosen_DPL dd ON k.id_dosen_dpl = dd.id_dosen_dpl
-    LEFT JOIN 
-        Kaprodi kp ON k.id_kaprodi = kp.id_kaprodi
-    WHERE 
-        k.id_mahasiswa = '{$mahasiswa['id_mahasiswa']}'
-    ORDER BY 
-        k.tanggal DESC";
-
-$result_kegiatan = $conn->query($sql_kegiatan);
-?>
-
 <?php include './includes/header.php'; ?>
-<div class="container">
 
-</div>
+<head>
+    <link rel="stylesheet" href="css/teststyle.css">
+</head>
 
+<body>
+    <div class="containermainlog-wrapper">
+        <div class="containermainlog">
+            <div class="cardmainlog">
+                <img src="images/Mahasiswa.jpg" alt="Role 1">
+                <h2>Mahasiswa</h2>
+                <p>Masuk atau Daftarkan Diri anda sebagai mahasiswa</p>
+                <button onclick="location.href='mahasiswa/login.php'">Login Mahasiswa</button>
+            </div>
+            <div class="cardmainlog">
+                <img src="images/DosenKM.jpg" alt="Role 2">
+                <h2>Dosen KM</h2>
+                <p>Masuk Sebagai Dosen Kampus Merdeka</p>
+                <button onclick="location.href='dosen_kampusmerdeka/login.php'">Login Dosen Km</button>
+            </div>
+            <div class="cardmainlog">
+                <img src="images/DosenDPL.jpg" alt="Role 3">
+                <h2>Dosen</h2>
+                <p>Masuk Sebagai Dosen Universitas Prima Indonesia</p>
+                <button onclick="location.href='dosen_dpl/login.php'">Login Dosen</button>
+            </div>
+            <div class="cardmainlog">
+                <img src="images/Kaprodi.jpg" alt="Role 4">
+                <h2>Kaprodi</h2>
+                <p>Masuk Sebagai Dosen Administrasi Akademik</p>
+                <button onclick="location.href='kaprodi/login.php'">Login kaprodi</button>
+            </div>
+        </div>
+    </div>
+</body>
 
-<?php include './includes/footer.php'; ?>
+</html>

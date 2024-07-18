@@ -33,11 +33,11 @@ while ($row = $result_dosen_dpl->fetch_assoc()) {
 }
 
 // Fetch options for Dosen_KampusMerdeka
-$sql_dosen_KM = "SELECT id_dosen_KM, nama FROM Dosen_KampusMerdeka";
+$sql_dosen_KM = "SELECT id_dosen_kampusmerdeka, nama FROM Dosen_kampusMerdeka";
 $result_dosen_KM = $conn->query($sql_dosen_KM);
 $dosen_KM_options = array();
 while ($row = $result_dosen_KM->fetch_assoc()) {
-    $dosen_KM_options[$row['id_dosen_KM']] = $row['nama'];
+    $dosen_KM_options[$row['id_dosen_kampusmerdeka']] = $row['nama'];
 }
 
 // Fetch options for Kaprodi
@@ -47,14 +47,20 @@ $kaprodi_options = array();
 while ($row = $result_kaprodi->fetch_assoc()) {
     $kaprodi_options[$row['id_kaprodi']] = $row['nama'];
 }
-
+$sql_program = "SELECT id_program, nama_program FROM programmbkm";
+$result_program = $conn->query($sql_program);
+$program_options = array();
+while ($row = $result_program->fetch_assoc()) {
+    $program_options[$row['id_program']] = $row['nama_program'];
+}
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nim = $_SESSION['nim'];
     $id_mahasiswa = getUserIdFromNim($conn, $nim);
-    $id_dosen_KM = $_POST['id_dosen_KM'];
+    $id_dosen_kampusmerdeka = $_POST['id_dosen_kampusmerdeka'];
     $id_dosen_dpl = $_POST['id_dosen_dpl'];
     $id_kaprodi = $_POST['id_kaprodi'];
+    $id_program = $_POST['id_program'];
     $description = $_POST['description'];
     $taskDate = $_POST['taskDate'];
 
@@ -81,10 +87,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert into database
-    $sql_insert = "INSERT INTO Kegiatan (id_mahasiswa, id_dosen_KM, id_dosen_dpl, id_kaprodi, deskripsi, tanggal, foto) 
-                   VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql_insert = "INSERT INTO Kegiatan (id_mahasiswa, id_dosen_kampusmerdeka, id_dosen_dpl, id_kaprodi, deskripsi,id_program, tanggal, foto) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql_insert);
-    $stmt->bind_param("iiissss", $id_mahasiswa, $id_dosen_KM, $id_dosen_dpl, $id_kaprodi, $description, $taskDate, $imagePath);
+    $stmt->bind_param("iiissss", $id_mahasiswa, $id_dosen_kampusmerdeka, $id_dosen_dpl, $id_kaprodi, $description, $id_program, $taskDate, $imagePath);
 
     if ($stmt->execute()) {
         echo "Task report submitted successfully.";
@@ -149,8 +155,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="date" id="taskDate" name="taskDate" required>
             </div>
             <div class="form-group">
-                <label for="id_dosen_KM">Dosen KampusMerdeka:</label><br>
-                <select id="id_dosen_KM" name="id_dosen_KM" required>
+                <label for="id_dosen_kampusmerdeka">Dosen KampusMerdeka:</label><br>
+                <select id="id_dosen_kampusmerdeka" name="id_dosen_kampusmerdeka" required>
                     <option value="">Select Dosen KampusMerdeka</option>
                     <?php foreach ($dosen_KM_options as $id => $nama) : ?>
                         <option value="<?php echo $id; ?>"><?php echo $nama; ?></option>
@@ -171,6 +177,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select id="id_kaprodi" name="id_kaprodi" required>
                     <option value="">Select Kaprodi</option>
                     <?php foreach ($kaprodi_options as $id => $nama) : ?>
+                        <option value="<?php echo $id; ?>"><?php echo $nama; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_program">Program:</label><br>
+                <select id="id_program" name="id_program" required>
+                    <option value="">Select program</option>
+                    <?php foreach ($program_options as $id => $nama) : ?>
                         <option value="<?php echo $id; ?>"><?php echo $nama; ?></option>
                     <?php endforeach; ?>
                 </select>

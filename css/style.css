@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   width: 99.9%;
+  overflow-x: hidden;
 }
 
 .containerlog {
@@ -348,5 +349,54 @@ input[type="submit"]:hover {
 }
 
 /* dashboard mahasiswa style */
+.contentmahasiswa {
+  display: grid;
+  justify-content: space-between; /* Mengatur jarak antara dua kolom */
+  padding: 20px;
+  width: 100%;
+}
+
+.baris {
+  /*display: flex; */
+  width: 100%;
+  float: left;
+  background: #4a249d;
+}
+
+.kolom-25 {
+  width: 25%;
+  padding: 10px;
+}
+
+.kolom-75 {
+  width: 75%;
+  top: 20px;
+  padding: 10px;
+}
+
+.programmhs,
+.programmhs75 {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.programmhs img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  max-width: 200px;
+}
+
+.programmhs h4 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.programmhs p,
+.programmhs75 p {
+  margin: 2px;
+}
 
 /*  end dashboard mahasiswa style */

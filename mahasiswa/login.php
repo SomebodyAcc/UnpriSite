@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="button input-box">
                                 <input type="submit" value="Submit">
                             </div>
-                            <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
+                            <div class="text sign-up-text">Don't have an account? <label for="flip">Signup now</label></div>
                         </div>
                     </form>
                 </div>

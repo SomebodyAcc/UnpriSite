@@ -86,11 +86,12 @@ $dosenkpr = $stmt_dosenkpr->fetch(PDO::FETCH_ASSOC);
 // Update activity
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['id_kegiatan'])) {
   $id_kegiatan = $_GET['id_kegiatan']; // Assuming you have id_kegiatan in your URL
-  $descriptions = $_POST['descriptions'];
+  $descriptions = $_POST['description'];
   $taskDate = $_POST['taskDate'];
   $imagePath = ''; // Initialize empty path
-
-
+  $status_dosen_kampusmerdeka = $_POST['status_dosen_kampusmerdeka'];
+  $status_dosen_dpl = $_POST['status_dosen_dpl'];
+  $status_kaprodi = $_POST['status_kaprodi'];
 
   // File upload handling
   if ($_FILES['image']['name']) {
@@ -115,11 +116,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['id_kegiatan'])) {
 
   // Prepare and execute SQL update
   $sql_update = "UPDATE kegiatan 
-                 SET deskripsi = :descriptions, tanggal = :taskDate, foto = :imagePath
+                 SET deskripsi = :descriptions, tanggal = :taskDate, foto = :imagePath, status_dosen_kampusmerdeka = :status_dosen_kampusmerdeka, status_dosen_dpl=:status_dosen_dpl, status_kaprodi=:status_kaprodi 
                  WHERE id_kegiatan = :id_kegiatan AND id_mahasiswa = :id_mahasiswa";
   $stmt_update = $pdo->prepare($sql_update);
   $stmt_update->execute([
-    ':descriptions' => $description,
+    ':descriptions' => $descriptions,
     ':taskDate' => $taskDate,
     ':imagePath' => $imagePath,
     ':id_kegiatan' => $id_kegiatan,
@@ -171,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['id_kegiatan'])) {
     <h3 class="text-center">Laporan Kegiatan Program Mingguan</h3>
     <p>NIM Mahasiswa: <?php echo htmlspecialchars($mhs['nim']); ?></p>
 
-    <form id="taskForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id_program=' . urlencode($id_program) . '&id_kegiatan=' . urlencode($id_kegiatan); ?>">
+    <form id="taskForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id_program=' . urlencode($id_program) . '&id_kegiatan=' . urlencode($id_kegiatan); ?>">
       <input type="hidden" name="id_mahasiswa" value="<?php echo htmlspecialchars($id_mahasiswa); ?>">
 
       <div class="mb-3">
@@ -213,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['id_kegiatan'])) {
       <input class="form-control" type="text" value="<?php echo htmlspecialchars($kegiatan['status_dosen_dpl']); ?>" aria-label="Disabled input example" disabled readonly>
       <div class="form-group">
         <label for="image">Unggah Foto (Opsional):</label><br>
-        <input type="file" id="image" name="image">
+        <input type="file" id="image" name="image" default>
       </div>
 
       <div class="form-group mt-3">

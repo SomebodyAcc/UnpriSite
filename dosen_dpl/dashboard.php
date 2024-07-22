@@ -56,7 +56,7 @@ $result_program = $stmt_program;
             <ul>
                 <li><a href="dashboard.php">Beranda</a></li>
                 <li><a href="../help.php">Butuh Bantuan?</a></li>
-                <li><a href="../logout.php?type=nipkp">Logout</a></li>
+                <li><a href="../logout.php?type=nipdpl">Logout</a></li>
             </ul>
         </nav>
     </header>

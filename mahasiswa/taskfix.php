@@ -26,6 +26,7 @@ $sql_mahasiswa = "SELECT * FROM Mahasiswa WHERE nim = :nim";
 $stmt_mahasiswa = $pdo->prepare($sql_mahasiswa);
 $stmt_mahasiswa->execute([':nim' => $nim]);
 $mhs = $stmt_mahasiswa->fetch(PDO::FETCH_ASSOC);
+
 // Redirect if id_program is not set
 if (!isset($_GET['id_program'])) {
   header('Location: dashboard.php');
@@ -45,6 +46,23 @@ if (!$program) {
   exit;
 }
 
+$id_kegiatan = $_GET['id_kegiatan'];
+
+// Fetch kegiatan details
+$sql_kegiatan = "SELECT k.*, p.id_mahasiswa
+                 FROM kegiatan k
+                 INNER JOIN ProgramMBKM p ON k.id_program = p.id_program
+                 WHERE k.id_program = :id_program AND k.id_kegiatan = :id_kegiatan";
+$stmt_kegiatan = $pdo->prepare($sql_kegiatan);
+$stmt_kegiatan->execute([':id_program' => $id_program, ':id_kegiatan' => $id_kegiatan]);
+$kegiatan = $stmt_kegiatan->fetch(PDO::FETCH_ASSOC);
+
+if (!$kegiatan) {
+  header('Location: dashboard.php');
+  exit;
+}
+
+
 // Fetch KM lecturer data
 $sql_dosenKM = "SELECT * FROM Dosen_KampusMerdeka WHERE id_dosen_kampusmerdeka = :id_dosen_kampusmerdeka";
 $stmt_dosenKM = $pdo->prepare($sql_dosenKM);
@@ -63,11 +81,16 @@ $stmt_dosenkpr = $pdo->prepare($sql_dosenkpr);
 $stmt_dosenkpr->execute([':id_kaprodi' => $program['id_kaprodi']]);
 $dosenkpr = $stmt_dosenkpr->fetch(PDO::FETCH_ASSOC);
 
-// Insert new activity
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $description = $_POST['description'];
+
+
+// Update activity
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_GET['id_kegiatan'])) {
+  $id_kegiatan = $_GET['id_kegiatan']; // Assuming you have id_kegiatan in your URL
+  $descriptions = $_POST['descriptions'];
   $taskDate = $_POST['taskDate'];
   $imagePath = ''; // Initialize empty path
+
+
 
   // File upload handling
   if ($_FILES['image']['name']) {
@@ -90,25 +113,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
 
-  // Prepare and execute SQL insert
-  $sql_insert = "INSERT INTO Kegiatan (id_mahasiswa, id_dosen_kampusmerdeka, id_dosen_dpl, id_kaprodi, deskripsi, id_program, tanggal, foto) 
-                 VALUES (:id_mahasiswa, :id_dosen_kampusmerdeka, :id_dosen_dpl, :id_kaprodi, :description, :id_program, :taskDate, :imagePath)";
-  $stmt_insert = $pdo->prepare($sql_insert);
-  $stmt_insert->execute([
-    ':id_mahasiswa' => $id_mahasiswa,
-    ':id_dosen_kampusmerdeka' => $dosenKM['id_dosen_kampusmerdeka'],
-    ':id_dosen_dpl' => $dosendpl['id_dosen_dpl'],
-    ':id_kaprodi' => $dosenkpr['id_kaprodi'],
-    ':description' => $description,
-    ':id_program' => $program['id_program'],
+  // Prepare and execute SQL update
+  $sql_update = "UPDATE kegiatan 
+                 SET deskripsi = :descriptions, tanggal = :taskDate, foto = :imagePath
+                 WHERE id_kegiatan = :id_kegiatan AND id_mahasiswa = :id_mahasiswa";
+  $stmt_update = $pdo->prepare($sql_update);
+  $stmt_update->execute([
+    ':descriptions' => $description,
     ':taskDate' => $taskDate,
-    ':imagePath' => $imagePath
+    ':imagePath' => $imagePath,
+    ':id_kegiatan' => $id_kegiatan,
+    ':id_mahasiswa' => $id_mahasiswa
   ]);
 
   // Redirect to dashboard after successful submission
-  header("Location: dashboard2.php");
+  header("Location: dashboard.php");
   exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -149,12 +171,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h3 class="text-center">Laporan Kegiatan Program Mingguan</h3>
     <p>NIM Mahasiswa: <?php echo htmlspecialchars($mhs['nim']); ?></p>
 
-    <form id="taskForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id_program=' . urlencode($id_program); ?>" method="post" enctype="multipart/form-data">
+    <form id="taskForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id_program=' . urlencode($id_program) . '&id_kegiatan=' . urlencode($id_kegiatan); ?>">
       <input type="hidden" name="id_mahasiswa" value="<?php echo htmlspecialchars($id_mahasiswa); ?>">
 
       <div class="mb-3">
         <label for="description" class="form-label">Deskripsi Kegiatan:</label>
-        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+        <textarea class="form-control" id="descriptions" name="description" rows="4" required><?php echo $kegiatan['deskripsi'] ?></textarea>
       </div>
 
       <div class="form-group">
@@ -162,10 +184,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="date" id="taskDate" name="taskDate" required>
       </div>
 
-      <input type="hidden" name="id_dosen_kampusmerdeka" value="<?php echo htmlspecialchars($dosenKM['id_dosen_kampusmerdeka']); ?>">
-      <input type="hidden" name="id_dosen_dpl" value="<?php echo htmlspecialchars($dosendpl['id_dosen_dpl']); ?>">
-      <input type="hidden" name="id_kaprodi" value="<?php echo htmlspecialchars($dosenkpr['id_kaprodi']); ?>">
-      <input type="hidden" name="id_program" value="<?php echo htmlspecialchars($program['id_program']); ?>">
+      <input type="hidden" name="id_dosen_kampusmerdeka" value="<?php echo htmlspecialchars($kegiatan['id_dosen_kampusmerdeka']); ?>">
+      <input type="hidden" name="id_dosen_dpl" value="<?php echo htmlspecialchars($kegiatan['id_dosen_dpl']); ?>">
+      <input type="hidden" name="id_kaprodi" value="<?php echo htmlspecialchars($kegiatan['id_kaprodi']); ?>">
+      <input type="hidden" name="id_program" value="<?php echo htmlspecialchars($kegiatan['id_program']); ?>">
+
+      <input type="hidden" name="status_dosen_kampusmerdeka" value="<?php if ($kegiatan['status_dosen_kampusmerdeka'] == 'Diverifikasi') :
+                                                                      echo "Diverifikasi";
+                                                                    elseif ($kegiatan['status_dosen_kampusmerdeka'] == 'Ditolak') :
+                                                                      echo "Pending";
+                                                                    endif; ?>">
+      <input type="hidden" name="status_dosen_dpl" value="<?php if ($kegiatan['status_dosen_dpl'] == 'Diverifikasi') :
+                                                            echo "Diverifikasi";
+                                                          elseif ($kegiatan['status_dosen_dpl'] == 'Ditolak') :
+                                                            echo "Pending";
+                                                          endif; ?>">
+      <input type="hidden" name="status_kaprodi" value="<?php echo "Pending"; ?>">
+
       <label class="form-label">Program :</label>
       <input class="form-control" type="text" value="<?php echo htmlspecialchars($program['nama_program']); ?>" aria-label="Disabled input example" disabled readonly>
       <label class="form-label">Nama DPL:</label>
@@ -174,6 +209,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <input class="form-control" type="text" value="<?php echo htmlspecialchars($dosenKM['nama']); ?>" aria-label="Disabled input example" disabled readonly>
       <label class="form-label">Nama Kaprodi:</label>
       <input class="form-control" type="text" value="<?php echo htmlspecialchars($dosenkpr['nama']); ?>" aria-label="Disabled input example" disabled readonly>
+      <label class="form-label">status</label>
+      <input class="form-control" type="text" value="<?php echo htmlspecialchars($kegiatan['status_dosen_dpl']); ?>" aria-label="Disabled input example" disabled readonly>
       <div class="form-group">
         <label for="image">Unggah Foto (Opsional):</label><br>
         <input type="file" id="image" name="image">

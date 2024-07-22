@@ -12,9 +12,11 @@ if (!isset($_SESSION['nip'])) {
 $nip = $_SESSION['nip'];
 
 // Query untuk mendapatkan nama dosen berdasarkan nip
-$sql_dosenkm = "SELECT * FROM dosen_kampusmerdeka WHERE nip='$nip'";
-$result_dosenkm = $conn->query($sql_dosenkm);
-$dosenkm = $result_dosenkm->fetch_assoc();
+$sql_dosenkm = "SELECT * FROM dosen_kampusmerdeka WHERE nip=:nip";
+$stmt = $pdo->prepare($sql_dosenkm);
+$stmt->bindParam(':nip', $nip);
+$stmt->execute();
+$dosenkm = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Query untuk mendapatkan informasi program, id program, dan nama mahasiswa
 $sql = "SELECT
@@ -29,10 +31,11 @@ $sql = "SELECT
             programmbkm p
             LEFT JOIN Mahasiswa m ON p.id_mahasiswa = m.id_mahasiswa
         WHERE
-            p.id_dosen_kampusmerdeka = '{$dosenkm['id_dosen_kampusmerdeka']}'";
+            p.id_dosen_kampusmerdeka = :id_dosenkm";
 
-$result_program = $conn->query($sql);
-
+$stmt = $pdo->prepare($sql);
+$stmt->execute([':id_dosenkm' => $dosenkm['id_dosen_kampusmerdeka']]);
+$result_program = $stmt;
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +66,7 @@ $result_program = $conn->query($sql);
                     </div>
                 </li>
                 <li><a href="../help.php">Butuh Bantuan?</a></li>
-                <li><a href="../logout.php">Logout</a></li>
+                <li><a href="../logout.php?type=nip">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -73,7 +76,7 @@ $result_program = $conn->query($sql);
         <div class="container-fluid">
             <?php
             $prev_id_program = 0;
-            while ($row = $result_program->fetch_assoc()) :
+            while ($row = $result_program->fetch(PDO::FETCH_ASSOC)) :
             ?>
                 <div class="col-xl-12 mt-3">
                     <div class="row">
@@ -133,15 +136,39 @@ $result_program = $conn->query($sql);
 
                                 while ($tugas = $result_kegiatan->fetch_assoc()) : ?>
                                     <div class="card mb-2">
+                                        <div class="card-header">
+                                            <ul class="nav nav-pills card-header-pills">
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-bg-primary m-1 disabled" aria-disabled="true">laporan Kegiatan</a>
+                                                </li>
+                                                <div>
+                                                    <?php if ($tugas['status_dosen_kampusmerdeka'] == 'Diverifikasi') : ?>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link text-bg-primary m-1" href="dashboardkegiatan.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>">Perlihatkan Laporan</a>
+                                                        </li>
+                                                    <?php elseif ($tugas['status_dosen_kampusmerdeka'] == 'Ditolak') : ?>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link text-bg-danger m-1" href="valLog.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>">Ubah Status Validasi</a>
+                                                        </li>
+                                                    <?php elseif ($tugas['status_dosen_kampusmerdeka'] == 'Pending') : ?>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link text-bg-warning m-1" href="valLog.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>">Validasi Laporan</a>
+                                                        </li>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </ul>
+
+
+                                        </div>
                                         <div class="card-body">
-                                            <h5 class="card-title">Kampus Mengajar</h5>
                                             <p class="card-text">
                                                 ID Kegiatan: <?php echo htmlspecialchars($tugas['id_kegiatan']); ?>
                                             </p>
-                                            <p class="card-text">
-                                                Deskripsi: <?php echo htmlspecialchars($tugas['deskripsi']); ?>
-                                            </p>
-
+                                            <div class="overflow-scroll" style="max-height: 120px;">
+                                                <p class="card-text mb-3">
+                                                    Deskripsi: <?php echo htmlspecialchars($tugas['deskripsi']); ?>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                             <?php endwhile;

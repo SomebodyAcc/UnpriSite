@@ -3,30 +3,30 @@ session_start();
 include('../includes/db.php'); // Sesuaikan dengan path ke file db.php
 
 // Periksa apakah session nip sudah ter-set
-if (!isset($_SESSION['nip'])) {
+if (!isset($_SESSION['nipdpl'])) {
   header('Location: login.php'); // Redirect jika belum login
   exit;
 }
 
 //get Dosen KM id
-function getdosenidFromNIP($pdo, $nip)
+function getdosenidFromNIPdpl($pdo, $nipdpl)
 {
-  $sql = "SELECT id_dosen_kampusmerdeka FROM dosen_kampusmerdeka WHERE nip = :nip";
+  $sql = "SELECT id_dosen_dpl FROM dosen_dpl WHERE nipdpl = :nipdpl";
   $stmt = $pdo->prepare($sql);
-  $stmt->execute([':nip' => $nip]);
+  $stmt->execute([':nipdpl' => $nipdpl]);
   $result = $stmt->fetchColumn();
   return $result;
 }
 
 // Ambil nip dari session
-$nip = $_SESSION['nip'];
+$nipdpl = $_SESSION['nipdpl'];
 // Query untuk mendapatkan data dosen KM berdasarkan nip
-$id_dosenkm = getdosenidFromNIP($pdo, $nip);
-$sql_dosenkm = "SELECT * FROM dosen_kampusmerdeka WHERE nip=:nip";
-$stmtkm = $pdo->prepare($sql_dosenkm);
-$stmtkm->bindParam(':nip', $nip);
-$stmtkm->execute();
-$dosenkm = $stmtkm->fetch(PDO::FETCH_ASSOC);
+$id_dosendpl = getdosenidFromNIPdpl($pdo, $nipdpl);
+$sql_dosendpl = "SELECT * FROM dosen_dpl WHERE nipdpl=:nipdpl";
+$stmtdpl = $pdo->prepare($sql_dosendpl);
+$stmtdpl->bindParam(':nipdpl', $nipdpl);
+$stmtdpl->execute();
+$dosendpl = $stmtdpl->fetch(PDO::FETCH_ASSOC);
 
 // Program Part
 // Redirect if id_program is not set
@@ -36,9 +36,9 @@ if (!isset($_GET['id_program'])) {
 }
 $id_program = $_GET['id_program'];
 // Fetch program details
-$sql_program = "SELECT * FROM ProgramMBKM WHERE id_program = :id_program AND id_dosen_kampusmerdeka = :id_dosen_kampusmerdeka";
+$sql_program = "SELECT * FROM ProgramMBKM WHERE id_program = :id_program AND id_dosen_dpl = :id_dosen_dpl";
 $stmt_program = $pdo->prepare($sql_program);
-$stmt_program->execute([':id_program' => $id_program, ':id_dosen_kampusmerdeka' => $id_dosenkm]);
+$stmt_program->execute([':id_program' => $id_program, ':id_dosen_dpl' => $id_dosendpl]);
 $program = $stmt_program->fetch(PDO::FETCH_ASSOC);
 
 if (!$program) {
@@ -56,7 +56,7 @@ $id_program = $_GET['id_program'];
 $id_kegiatan = $_GET['id_kegiatan'];
 
 // Fetch kegiatan details
-$sql_kegiatan = "SELECT k.*, p.id_dosen_kampusmerdeka
+$sql_kegiatan = "SELECT k.*, p.id_dosen_dpl
                  FROM kegiatan k
                  INNER JOIN ProgramMBKM p ON k.id_program = p.id_program
                  WHERE k.id_program = :id_program AND k.id_kegiatan = :id_kegiatan";

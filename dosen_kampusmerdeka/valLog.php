@@ -75,6 +75,31 @@ $stmt_mahasiswa = $pdo->prepare($sql_mahasiswa);
 $stmt_mahasiswa->execute([':id_mahasiswa' => $program['id_mahasiswa']]);
 $mahasiswa = $stmt_mahasiswa->fetch(PDO::FETCH_ASSOC);
 
+//Pengiriman Data Status 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  // Ambil nilai status dari form
+  $status = $_POST['status'];
+  $id_program = $_GET['id_program'];
+  $id_kegiatan = $_GET['id_kegiatan'];
+  // Validasi status yang diterima
+  if ($status === 'default') {
+    // Menyiapkan data untuk dikirim kembali ke form
+    echo "Harap Mengisi Status Validasi";
+  } else {
+    // Jika status valid, lakukan proses update ke database
+    $sql_update = "UPDATE kegiatan SET status_dosen_kampusmerdeka = :status WHERE id_program = :id_program AND id_kegiatan = :id_kegiatan";
+    $stmt_update = $pdo->prepare($sql_update);
+    $stmt_update->execute([
+      ':status' => $status,
+      ':id_program' => $id_program,
+      ':id_kegiatan' => $id_kegiatan
+    ]);
+
+    // Redirect kembali ke halaman dashboard atau halaman lain setelah update berhasil
+    header('Location: dashboard.php');
+    exit;
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -116,10 +141,21 @@ $mahasiswa = $stmt_mahasiswa->fetch(PDO::FETCH_ASSOC);
       <div class="card task-form-container ">
         <div class="card-body">
           <h3 class="card-title d-flex justify-content-center mb-3"><?php echo $program['nama_program'] ?></h3>
-          <textarea class="card-text" style="min-height: 240px;" readonly><?php echo $kegiatan['deskripsi'] ?></textarea>
+          <textarea class="card-text" readonly><?php echo $kegiatan['deskripsi'] ?></textarea>
         </div>
         <img src="../images/KampusMengajar.png" class="card-img-bottom mb-1" alt="...">
-        <a class="d-flex justify-content-center mb-3 mt-3" href="dashboard.php"><button type="button" class="btn btn-primary ">Kembali Ke halaman Dashboard</button></a>
+      </div>
+      <div class="task-form-container">
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id_program=' . urlencode($id_program) . '&id_kegiatan=' . urlencode($id_kegiatan); ?>">
+          <select name="status" class="form-select" aria-label="Default select example">
+            <option value="default" selected>Status Laporan Kegiatan</option>
+            <option value="Diverifikasi">Verifikasi</option>
+            <option value="Ditolak">Tolak</option>
+          </select>
+          <div class="col-12 mt-3 d-flex justify-content-center">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+          </div>
+        </form>
       </div>
     </main>
 

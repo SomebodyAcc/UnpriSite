@@ -93,7 +93,7 @@ $stmt_combined->execute([':id_mahasiswa' => $mahasiswa['id_mahasiswa']]);
                     </div>
                 </li>
                 <li><a href="../help.php">Butuh Bantuan?</a></li>
-                <li><a href="../logout.php">Logout</a></li>
+                <li><a href="../logout.php?type=nim">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -136,7 +136,10 @@ $stmt_combined->execute([':id_mahasiswa' => $mahasiswa['id_mahasiswa']]);
                             SELECT 
                                 k.id_kegiatan, 
                                 k.deskripsi, 
-                                k.tanggal, 
+                                k.tanggal,
+                                k.status_dosen_kampusmerdeka,
+                                k.status_dosen_dpl,
+                                k.status_kaprodi, 
                                 dk.nama AS nama_dosen_kampusmerdeka, 
                                 dd.nama AS nama_dosen_dpl, 
                                 kp.nama AS nama_kaprodi
@@ -161,14 +164,58 @@ $stmt_combined->execute([':id_mahasiswa' => $mahasiswa['id_mahasiswa']]);
 
                                 while ($tugas = $stmt_kegiatan->fetch(PDO::FETCH_ASSOC)) : ?>
                                     <div class="card mb-2">
+                                        <div class="card-header d-flex">
+                                            <div class="me-auto p-2"><span class="badge text-bg-primary">Laporan Kegiatan</span></div>
+                                            <div>
+                                                <?php if ($tugas['status_dosen_kampusmerdeka'] == 'Diverifikasi') : ?>
+                                                    <span class="badge text-bg-success m-1">Diverifikasi oleh Dosen KM</span>
+                                                <?php elseif ($tugas['status_dosen_kampusmerdeka'] == 'Ditolak') : ?>
+                                                    <span class="badge text-bg-danger m-1">Ditolak Oleh Dosen KM</span>
+                                                    <a href="taskfix.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>" class="btn btn-primary mb-2">Perbaiki Laporan</a>
+                                                <?php elseif ($tugas['status_dosen_kampusmerdeka'] == 'Pending') : ?>
+                                                    <span class="badge text-bg-secondary m-1">Menunggu Verifikasi Dosen KM</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div>
+                                                <?php if ($tugas['status_dosen_dpl'] == 'Diverifikasi') : ?>
+                                                    <span class="badge text-bg-success m-1">Diverifikasi oleh Dosen Pembimbing Lapangan</span>
+                                                <?php elseif ($tugas['status_dosen_dpl'] == 'Ditolak') : ?>
+                                                    <span class="badge text-bg-danger m-1">Ditolak oleh Dosen Pembimbing Lapangan <a href="taskfix.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>&status_dosen_dpl=<?php echo $tugas['status_dosen_dpl']; ?>">Perbaiki Laporan</a></span>
+
+                                                <?php elseif ($tugas['status_dosen_dpl'] == 'Pending') : ?>
+                                                    <span class="badge text-bg-secondary m-1">Menunggu Verifikasi Dosen Pembimbing Lapangan</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div>
+                                                <?php if ($tugas['status_kaprodi'] == 'Divalidasi') : ?>
+                                                    <span class="badge text-bg-success m-1">Diverifikasi kaprodi</span>
+                                                <?php elseif ($tugas['status_kaprodi'] == 'Ditolak') : ?>
+                                                    <span class="badge text-bg-danger m-1">Ditolak kaprodi</span>
+                                                <?php elseif ($tugas['status_kaprodi'] == 'Pending') : ?>
+                                                    <span class="badge text-bg-secondary m-1">Menunggu Verifikasi kaprodi</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div>
+                                                <?php if (
+                                                    $tugas['status_kaprodi'] == 'Diverifikasi' &&
+                                                    $tugas['status_dosen_pembimbing'] == 'Diverifikasi' &&
+                                                    $tugas['status_dosen_kampusmerdeka'] == 'Diverifikasi'
+                                                ) : ?>
+                                                    <span class="badge text-bg-success m-1">Laporan kegiatan Selesai</span>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
                                         <div class="card-body">
-                                            <h5 class="card-title">Kampus Mengajar</h5>
+
                                             <p class="card-text">
                                                 ID Kegiatan: <?php echo htmlspecialchars($tugas['id_kegiatan']); ?>
                                             </p>
-                                            <p class="card-text">
-                                                Deskripsi: <?php echo htmlspecialchars($tugas['deskripsi']); ?>
-                                            </p>
+                                            <div class="overflow-scroll" style="max-height: 140px;">
+                                                <p class="card-text mb-3">
+                                                    Deskripsi: <?php echo htmlspecialchars($tugas['deskripsi']); ?>
+                                                </p>
+                                            </div>
+
                                         </div>
                                     </div>
                             <?php endwhile;

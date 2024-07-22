@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nip = $_POST['nip'];
     $pswrd = $_POST['pswrd'];
 
-    $sql = "SELECT * FROM Dosen_KampusMerdeka WHERE nip='$nip'";
+    $sql = "SELECT * FROM dosen_KampusMerdeka WHERE nip='$nip'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

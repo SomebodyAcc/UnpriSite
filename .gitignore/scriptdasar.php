@@ -30,3 +30,23 @@
         </div>
     <?php endwhile; ?>
 </div>
+<?php 
+SELECT
+Kegiatan.id_kegiatan,
+Mahasiswa.nama AS nama_mahasiswa,
+Dosen_KampusMerdeka.nama AS nama_dosen_kampusmerdeka,
+Dosen_DPL.nama AS nama_dosen_dpl,
+Kaprodi.nama AS nama_kaprodi,
+Kegiatan.tanggal,
+Kegiatan.deskripsi,
+Kegiatan.status_dosen_kampusmerdeka,
+Kegiatan.status_dosen_dpl,
+Kegiatan.status_kaprodi
+FROM
+Kegiatan
+LEFT JOIN Mahasiswa ON Kegiatan.id_mahasiswa = Mahasiswa.id_mahasiswa
+LEFT JOIN Dosen_KampusMerdeka ON Kegiatan.id_dosen_kampusmerdeka = Dosen_KampusMerdeka.id_dosen_kampusmerdeka
+LEFT JOIN Dosen_DPL ON Kegiatan.id_dosen_dpl = Dosen_DPL.id_dosen_dpl
+LEFT JOIN Kaprodi ON Kegiatan.id_kaprodi = Kaprodi.id_kaprodi;
+
+?>

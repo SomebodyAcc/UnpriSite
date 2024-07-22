@@ -146,7 +146,7 @@ $result_program = $stmt_program;
                                                         $tugas['status_dosen_kampusmerdeka'] !== 'Diverifikasi'
                                                     ) : ?>
                                                         <li class="nav-item">
-                                                            <a class="nav-link text-bg-warning m-1 disabled" href="valLog.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>">Menunggu Validasi Laporan DPL</a>
+                                                            <a class="nav-link text-bg-warning m-1 disabled" href="valLog.php?id_program=<?php echo $row['id_program']; ?>&id_kegiatan=<?php echo $tugas['id_kegiatan']; ?>">Menunggu Validasi Laporan Dosen KM</a>
                                                         </li>
 
                                                     <?php endif; ?>

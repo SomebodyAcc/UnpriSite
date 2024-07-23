@@ -120,7 +120,53 @@ $stmt_combined->execute([':id_mahasiswa' => $mahasiswa['id_mahasiswa']]);
                                         </p>
                                     </div>
                                     <div class="col-6 mx-auto">
-                                        <a href="taskreport.php?id_program=<?php echo $row['id_program']; ?>" class="btn btn-primary mb-2">Tambah Laporan</a>
+                                        <?php $id_program = $row['id_program'];
+                                        $id_mahasiswa = $mahasiswa['id_mahasiswa'];
+                                        $sql_kegiatan = "
+                                            SELECT 
+                                                k.id_kegiatan, 
+                                                k.deskripsi, 
+                                                k.tanggal,
+                                                k.status_dosen_kampusmerdeka,
+                                                k.status_dosen_dpl,
+                                                k.status_kaprodi, 
+                                                dk.nama AS nama_dosen_kampusmerdeka, 
+                                                dd.nama AS nama_dosen_dpl, 
+                                                kp.nama AS nama_kaprodi
+                                            FROM 
+                                                Kegiatan k
+                                            LEFT JOIN 
+                                                Dosen_KampusMerdeka dk ON k.id_dosen_kampusmerdeka = dk.id_dosen_kampusmerdeka
+                                            LEFT JOIN 
+                                                Dosen_DPL dd ON k.id_dosen_dpl = dd.id_dosen_dpl
+                                            LEFT JOIN 
+                                                Kaprodi kp ON k.id_kaprodi = kp.id_kaprodi
+                                            WHERE 
+                                                k.id_program = :id_program AND k.id_mahasiswa = :id_mahasiswa
+                                            ORDER BY 
+                                                k.tanggal DESC";
+
+                                        $stmt_kegiatan = $pdo->prepare($sql_kegiatan);
+                                        $stmt_kegiatan->execute([
+                                            ':id_program' => $id_program,
+                                            ':id_mahasiswa' => $id_mahasiswa,
+                                        ]);
+                                        $tugas = $stmt_kegiatan->fetch(PDO::FETCH_ASSOC) ?>
+                                        <?php if (
+                                            $tugas['status_kaprodi'] == 'Divalidasi' &&
+                                            $tugas['status_dosen_dpl'] == 'Diverifikasi' &&
+                                            $tugas['status_dosen_kampusmerdeka'] == 'Diverifikasi'
+                                        ) : ?>
+                                            <a href="taskreport.php?id_program=<?php echo $row['id_program']; ?>" class="btn btn-primary mb-2">Tambah Laporan</a>
+                                        <?php elseif (
+                                            $tugas['status_kaprodi'] !== 'Divalidasi' &&
+                                            $tugas['status_dosen_dpl'] !== 'Diverifikasi' &&
+                                            $tugas['status_dosen_kampusmerdeka'] !== 'Diverifikasi'
+                                        ) : ?>
+
+                                            <a href="taskreport.php?id_program=<?php echo $row['id_program']; ?>" class="btn btn-primary mb-2 disabled">Menunggu Verifikasi</a>
+                                        <?php endif; ?>
+
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +244,7 @@ $stmt_combined->execute([':id_mahasiswa' => $mahasiswa['id_mahasiswa']]);
                                             <div>
                                                 <?php if (
                                                     $tugas['status_kaprodi'] == 'Diverifikasi' &&
-                                                    $tugas['status_dosen_pembimbing'] == 'Diverifikasi' &&
+                                                    $tugas['status_dosen_dpl'] == 'Diverifikasi' &&
                                                     $tugas['status_dosen_kampusmerdeka'] == 'Diverifikasi'
                                                 ) : ?>
                                                     <span class="badge text-bg-success m-1">Laporan kegiatan Selesai</span>

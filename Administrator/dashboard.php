@@ -1,3 +1,54 @@
+<?php
+session_start();
+include('../includes/db.php'); // Termasuk file koneksi
+
+// Redirect jika tidak login
+if (!isset($_SESSION['nid'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Get administrator info
+$nid = $_SESSION['nid'];
+$sql_administrator = "SELECT * FROM administrator WHERE nid = :nid";
+$stmt_administrator = $pdo->prepare($sql_administrator);
+$stmt_administrator->execute([':nid' => $nid]);
+$administrator = $stmt_administrator->fetch(PDO::FETCH_ASSOC);
+
+// Queries untuk data-data yang diperlukan
+$queries = [
+    "mahasiswa" => "SELECT * FROM mahasiswa",
+    "dosenkm" => "SELECT * FROM dosen_kampusmerdeka",
+    "dosendpl" => "SELECT * FROM dosen_dpl",
+    "kaprodi" => "SELECT * FROM kaprodi",
+    "program" => "SELECT * FROM programmbkm"
+];
+
+$data = [];
+foreach ($queries as $key => $query) {
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $data[$key] = $stmt->fetchAll();
+}
+
+// Hitung jumlah data dari masing-masing tabel
+$count_queries = [
+    "mahasiswa" => "SELECT COUNT(*) AS jumlah FROM mahasiswa",
+    "dosenkm" => "SELECT COUNT(*) AS jumlah FROM dosen_kampusmerdeka",
+    "dosendpl" => "SELECT COUNT(*) AS jumlah FROM dosen_dpl",
+    "kaprodi" => "SELECT COUNT(*) AS jumlah FROM kaprodi",
+    "program" => "SELECT COUNT(*) AS jumlah FROM programmbkm"
+];
+
+$count = [];
+foreach ($count_queries as $key => $count_query) {
+    $stmt_count = $pdo->prepare($count_query);
+    $stmt_count->execute();
+    $count[$key] = $stmt_count->fetchColumn();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +98,7 @@
                     <a href="#">Dosen</a>
                 </li>
                 <li>
-                    <a href="#">Logout</a>
+                    <a href="logout.php">Logout</a>
                 </li>
 
             </ul>
@@ -91,7 +142,7 @@
                             <img src="../images/KampusMengajar.png" class="card-img-top " alt="...">
                             <div class="card-body">
                                 <h5 class="card-title text-center">Mahasiswa</h5>
-                                <h5 class="card-text text-center">377 Mahasiswa</h5>
+                                <h5 class="card-text text-center">Jumlah Mahasiswa : <?php echo $count['mahasiswa'] ?> Mahasiswa</h5>
                                 <a href="listmhs.php" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Mahasiswa</a>
                             </div>
                         </div>
@@ -100,9 +151,9 @@
                         <div class="card">
                             <img src="../images/KampusMengajar.png" class="card-img-top " alt="...">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Daftar Program</h5>
-                                <h5 class="card-text text-center">12 Program</h5>
-                                <a href="#" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Program</a>
+                                <h5 class="card-title text-center">Dosen KM</h5>
+                                <h5 class="card-text text-center">Jumlah Dosen KM : <?php echo $count['dosenkm'] ?> Dosen</h5>
+                                <a href="listmhs.php" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Dosen KM</a>
                             </div>
                         </div>
                     </div>
@@ -111,16 +162,21 @@
                             <img src="../images/KampusMengajar.png" class="card-img-top " alt="...">
                             <div class="card-body">
                                 <h5 class="card-title text-center">Dosen</h5>
-                                <h5 class="card-text text-center">31 Dosen</h5>
-                                <a href="#" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Dosen</a>
+                                <h5 class="card-text text-center">Jumlah Dosen : <?php echo $count['dosendpl'] ?> Dosen</h5>
+                                <a href="listdpl.php" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Dosen</a>
                             </div>
                         </div>
                     </div>
 
+
                 </div>
+
+
+
             </div>
         </div>
-        <!-- /#main-content -->
+    </div>
+    <!-- /#main-content -->
 
     </div>
     <!-- /#wrapper -->

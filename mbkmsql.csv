@@ -2,7 +2,7 @@
 "2","Dosen DPL 3","3333","3333@gmail.com","$2y$10$GKAqdOcFgGJ9/MmdcD0V/u06wYtDLlmsErFGMybjoKHFk.3i7.xFe"
 "id_dosen_kampusmerdeka","nama","nip","email","password"
 "3","Dosen Kampus Merdeka 2","2222","2222@gmail.com","$2y$10$sWttRViwbKZv9dFqYG88GuDVluXZ4LRUqVJx0iaRTZdhyAITc2ZOq"
-"id_kaprodi","nama","nipkp","email","password"
+  "id_kaprodi","nama","nipkp","email","password"
 "3","Dosen Kaprodi 4","4444","4444@gmail.com","$2y$10$5AtDmmwBDc4.VvXaVVpI/e6XG.TxiOjfLUDt6jncSIA71GZtcMk.."
 "id_kegiatan","id_mahasiswa","id_dosen_kampusmerdeka","id_dosen_dpl","id_kaprodi","id_program","tanggal","deskripsi","status_dosen_kampusmerdeka","status_dosen_dpl","status_kaprodi","foto"
 "15","3","3","2","3","5","2024-07-23","Tambah Kegiatan","Diverifikasi","Diverifikasi","Divalidasi",NULL

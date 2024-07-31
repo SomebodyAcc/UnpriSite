@@ -162,32 +162,29 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
       </nav>
       <!-- navbar ends -->
 
-      <table class="table container table-bordered border-success border-2 mt-3" x>
+      <table class="table  container table-bordered border-success border-2 mt-3">
         <h3 class="text-center">Daftar Mahasiswa</h3>
-
         <thead>
           <tr class="text-center">
-            <th scope="col">NIM Mahasiswa</th>
-            <th scope="col">Nama Mahasiswa</th>
-            <th scope="col">DPL Mahasiswa</th>
-            <th scope="col">Program Mahasiswa</th>
-            <th scope="col">Cek Mahasiswa</th>
+            <th scope="col">NIP Dosen</th>
+            <th scope="col">Nama Dosen</th>
+            <th scope="col">Anggota Mahasiswa</th>
+            <th scope="col">Cek dosen</th>
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($mahasiswa_program as $row) : ?>
+          <?php foreach ($dpl_mahasiswa_program as $row) : ?>
             <tr class="text-center">
-              <td><?php echo $row['nim']; ?></td>
-              <td><?php echo $row['nama_mahasiswa']; ?></td>
+              <td><?php echo $row['nipdpl']; ?></td>
               <td><?php echo $row['nama_dpl']; ?></td>
-              <td><?php echo $row['nama_program']; ?></td>
+              <td><?php echo $row['nama_mahasiswa']; ?></td>
+
               <td><a class="btn btn-primary" href="#" role="button">cek</a></td>
             </tr>
           <?php endforeach; ?>
         </tbody>
 
       </table>
-      <a class="btn btn-primary" href="tambahmhs.php" role="button">Tambah Mahasiswa</a>
     </div>
     <!-- /#main-content -->
 

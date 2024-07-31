@@ -1,28 +1,28 @@
 <?php
 session_start();
 include('../includes/db.php');
-if (isset($_SESSION['nip'])) {
+if (isset($_SESSION['nid'])) {
     header('Location: dashboard.php');
     exit;
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nip = $_POST['nip'];
-    $pswrd = $_POST['pswrd'];
+    $nid = $_POST['nid'];
+    $password = $_POST['password'];
 
-    $sql = "SELECT * FROM dosen_KampusMerdeka WHERE nip='$nip'";
+    $sql = "SELECT * FROM Administrator WHERE nid='$nid'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        if (password_verify($pswrd, $row['password'])) {
-            $_SESSION['nip'] = $nip;
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['nid'] = $nid;
             header('Location: dashboard.php');
             exit;
         } else {
             echo "Password salah.";
         }
     } else {
-        echo "NIP tidak ditemukan.";
+        echo "NIM tidak ditemukan.";
     }
 }
 ?>
@@ -82,11 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="input-boxes">
                             <div class="input-box">
                                 <i class="fas fa-envelope"></i>
-                                <input type="text" name="nip" placeholder="Masukkan NIP anda" required>
+                                <input type="text" name="nid" placeholder="Masukkan Id Administrator anda" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" name="pswrd" placeholder="Masukkan password" required>
+                                <input type="password" name="password" placeholder="Masukkan password" required>
                             </div>
                             <div class="button input-box">
                                 <input type="submit" value="Submit">
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-user"></i>
-                                <input type="text" name="nip" placeholder="Enter your NIP" required>
+                                <input type="text" name="nid" placeholder="Enter your ID Administrator Name" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-envelope"></i>
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" name="pswrd" placeholder="Enter your password" required>
+                                <input type="password" name="password" placeholder="Enter your password" required>
                             </div>
                             <div class="button input-box">
                                 <input type="submit" value="Signup">
@@ -129,3 +129,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
+<!-- 
+    <div class="container">
+        <h2>Login Mahasiswa</h2>
+        <form method="POST" action="">
+            NIM: <input type="number" name="nim" required><br>
+            Password: <input type="password" name="pswrd" required><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+</html> -->

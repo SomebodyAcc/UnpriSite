@@ -66,7 +66,7 @@ $sql_get_dpl_mahasiswa_program = "
     SELECT dpl.id_dosen_dpl, dpl.nama AS nama_dpl, dpl.nipdpl, dpl.email AS email_dpl,
            m.id_mahasiswa, m.nama AS nama_mahasiswa, m.nim, m.email AS email_mahasiswa,
            p.nama_program
-    FROM dosen_dpl dpl
+    FROM dosendpl dpl
     INNER JOIN programmbkm p ON dpl.id_dosen_dpl = p.id_dosen_dpl
     INNER JOIN Mahasiswa m ON p.id_mahasiswa = m.id_mahasiswa
 ";
@@ -162,9 +162,8 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
       </nav>
       <!-- navbar ends -->
 
-      <table class="table container table-bordered border-success border-2 mt-3" x>
+      <table class="table  container table-bordered border-success border-2 mt-3">
         <h3 class="text-center">Daftar Mahasiswa</h3>
-
         <thead>
           <tr class="text-center">
             <th scope="col">NIM Mahasiswa</th>
@@ -187,7 +186,6 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
         </tbody>
 
       </table>
-      <a class="btn btn-primary" href="tambahmhs.php" role="button">Tambah Mahasiswa</a>
     </div>
     <!-- /#main-content -->
 

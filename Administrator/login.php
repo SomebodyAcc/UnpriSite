@@ -1,21 +1,21 @@
 <?php
 session_start();
 include('../includes/db.php');
-if (isset($_SESSION['nim'])) {
+if (isset($_SESSION['nid'])) {
     header('Location: dashboard.php');
     exit;
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nim = $_POST['nim'];
-    $pswrd = $_POST['pswrd'];
+    $nid = $_POST['nid'];
+    $password = $_POST['password'];
 
-    $sql = "SELECT * FROM Mahasiswa WHERE nim='$nim'";
+    $sql = "SELECT * FROM Administrator WHERE nid='$nid'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        if (password_verify($pswrd, $row['pswrd'])) {
-            $_SESSION['nim'] = $nim;
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['nid'] = $nid;
             header('Location: dashboard.php');
             exit;
         } else {
@@ -82,11 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="input-boxes">
                             <div class="input-box">
                                 <i class="fas fa-envelope"></i>
-                                <input type="text" name="nim" placeholder="Masukkan NIM anda" required>
+                                <input type="text" name="nid" placeholder="Masukkan Id Administrator anda" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" name="pswrd" placeholder="Masukkan password" required>
+                                <input type="password" name="password" placeholder="Masukkan password" required>
                             </div>
                             <div class="button input-box">
                                 <input type="submit" value="Submit">
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-user"></i>
-                                <input type="text" name="nim" placeholder="Enter your NIM" required>
+                                <input type="text" name="nid" placeholder="Enter your ID Administrator Name" required>
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-envelope"></i>
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="input-box">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" name="pswrd" placeholder="Enter your password" required>
+                                <input type="password" name="password" placeholder="Enter your password" required>
                             </div>
                             <div class="button input-box">
                                 <input type="submit" value="Signup">

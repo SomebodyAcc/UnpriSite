@@ -52,27 +52,27 @@ foreach ($count_queries as $key => $count_query) {
 $sql_get_mahasiswa_program = "
     SELECT m.id_mahasiswa, m.nama AS nama_mahasiswa, m.nim, m.email AS email_mahasiswa, 
            p.nama_program, p.gambar, p.tanggal_awal, p.lama_waktu,
-           dpl.nama AS nama_dpl, dpl.nipdpl, dpl.email AS email_dpl
+           KM.nama AS nama_KM, KM.nip, KM.email AS email_KM
     FROM Mahasiswa m
     INNER JOIN programmbkm p ON m.id_mahasiswa = p.id_mahasiswa
-    INNER JOIN dosen_dpl dpl ON p.id_dosen_dpl = dpl.id_dosen_dpl
+    INNER JOIN dosen_kampusmerdeka KM ON p.id_dosen_kampusmerdeka = KM.id_dosen_kampusmerdeka
 ";
 
 $stmt_get_mahasiswa_program = $pdo->query($sql_get_mahasiswa_program);
 $mahasiswa_program = $stmt_get_mahasiswa_program->fetchAll(PDO::FETCH_ASSOC);
 
 // Query untuk mendapatkan data DPL dan Mahasiswa berdasarkan Program MBKM
-$sql_get_dpl_mahasiswa_program = "
-    SELECT dpl.id_dosen_dpl, dpl.nama AS nama_dpl, dpl.nipdpl, dpl.email AS email_dpl,
+$sql_get_km_mahasiswa_program = "
+    SELECT km.id_dosen_kampusmerdeka, km.nama AS nama_km, km.nip, km.email AS email_km,
            m.id_mahasiswa, m.nama AS nama_mahasiswa, m.nim, m.email AS email_mahasiswa,
            p.nama_program
-    FROM dosen_dpl dpl
-    INNER JOIN programmbkm p ON dpl.id_dosen_dpl = p.id_dosen_dpl
+    FROM dosen_kampusmerdeka km
+    INNER JOIN programmbkm p ON km.id_dosen_kampusmerdeka = p.id_dosen_kampusmerdeka
     INNER JOIN Mahasiswa m ON p.id_mahasiswa = m.id_mahasiswa
 ";
 
-$stmt_get_dpl_mahasiswa_program = $pdo->query($sql_get_dpl_mahasiswa_program);
-$dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_ASSOC);
+$stmt_get_km_mahasiswa_program = $pdo->query($sql_get_km_mahasiswa_program);
+$km_mahasiswa_program = $stmt_get_km_mahasiswa_program->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -166,7 +166,7 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
       <!-- navbar ends -->
 
       <table class="table  container table-bordered border-success border-2 mt-3">
-        <h3 class="text-center">Daftar Mahasiswa</h3>
+        <h3 class="text-center">Daftar Dosen Kampus Merdeka</h3>
         <thead>
           <tr class="text-center">
             <th scope="col">NIP Dosen</th>
@@ -176,10 +176,10 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($dpl_mahasiswa_program as $row) : ?>
+          <?php foreach ($km_mahasiswa_program as $row) : ?>
             <tr class="text-center">
-              <td><?php echo $row['nipdpl']; ?></td>
-              <td><?php echo $row['nama_dpl']; ?></td>
+              <td><?php echo $row['nip']; ?></td>
+              <td><?php echo $row['nama_km']; ?></td>
               <td><?php echo $row['nama_mahasiswa']; ?></td>
 
               <td><a class="btn btn-primary" href="#" role="button">cek</a></td>

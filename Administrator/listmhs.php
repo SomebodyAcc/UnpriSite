@@ -112,19 +112,22 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
           </a>
         </li>
         <li>
-          <a href="#">Dashboard</a>
+          <a href="dashboard.php">Dashboard</a>
         </li>
         <li>
-          <a href="#">Mahasiswa</a>
+          <a href="listmhs.php">Mahasiswa</a>
         </li>
         <li>
-          <a href="#">Program Mahasiwa</a>
+          <a href="listkm.php">Dosen KM</a>
+        </li>
+        <!-- <li>
+                    <a href="listProgram.php">Daftar Program</a>
+                </li> -->
+        <li>
+          <a href="listdpl.php">Dosen</a>
         </li>
         <li>
-          <a href="#">Dosen</a>
-        </li>
-        <li>
-          <a href="#">Logout</a>
+          <a href="logout.php">Logout</a>
         </li>
 
       </ul>
@@ -161,33 +164,33 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
         </div>
       </nav>
       <!-- navbar ends -->
-
-      <table class="table container table-bordered border-success border-2 mt-3" x>
-        <h3 class="text-center">Daftar Mahasiswa</h3>
-
-        <thead>
-          <tr class="text-center">
-            <th scope="col">NIM Mahasiswa</th>
-            <th scope="col">Nama Mahasiswa</th>
-            <th scope="col">DPL Mahasiswa</th>
-            <th scope="col">Program Mahasiswa</th>
-            <th scope="col">Cek Mahasiswa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($mahasiswa_program as $row) : ?>
+      <div class="container">
+        <table class="table container table-bordered border-success border-2 mt-3" x>
+          <h3 class="text-center">Daftar Mahasiswa</h3>
+          <thead>
             <tr class="text-center">
-              <td><?php echo $row['nim']; ?></td>
-              <td><?php echo $row['nama_mahasiswa']; ?></td>
-              <td><?php echo $row['nama_dpl']; ?></td>
-              <td><?php echo $row['nama_program']; ?></td>
-              <td><a class="btn btn-primary" href="#" role="button">cek</a></td>
+              <th scope="col">NIM Mahasiswa</th>
+              <th scope="col">Nama Mahasiswa</th>
+              <th scope="col">DPL Mahasiswa</th>
+              <th scope="col">Program Mahasiswa</th>
+              <th scope="col">Cek Mahasiswa</th>
             </tr>
-          <?php endforeach; ?>
-        </tbody>
+          </thead>
+          <tbody>
+            <?php foreach ($mahasiswa_program as $row) : ?>
+              <tr class="text-center">
+                <td><?php echo $row['nim']; ?></td>
+                <td><?php echo $row['nama_mahasiswa']; ?></td>
+                <td><?php echo $row['nama_dpl']; ?></td>
+                <td><?php echo $row['nama_program']; ?></td>
+                <td><a class="btn btn-primary" href="#" role="button">cek</a></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
 
-      </table>
-      <a class="btn btn-primary" href="tambahmhs.php" role="button">Tambah Mahasiswa</a>
+        </table>
+        <a class="btn btn-primary" href="tbhmhs.php" role="button">Tambah Mahasiswa</a>
+      </div>
     </div>
     <!-- /#main-content -->
 

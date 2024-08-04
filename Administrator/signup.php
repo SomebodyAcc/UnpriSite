@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Query untuk memasukkan data ke dalam database
-    $sql = "INSERT INTO administrator (nama, nid, email, password) 
+    $sql = "INSERT INTO administrator (username, nid, email, password) 
             VALUES ('$nama', '$nid', '$email', '$hashed_password')";
 
     if ($conn->query($sql) === TRUE) {

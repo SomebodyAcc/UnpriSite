@@ -86,16 +86,19 @@ foreach ($count_queries as $key => $count_query) {
                     </a>
                 </li>
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a href="dashboard.php">Dashboard</a>
                 </li>
                 <li>
-                    <a href="#">Mahasiswa</a>
+                    <a href="listmhs.php">Mahasiswa</a>
                 </li>
                 <li>
-                    <a href="#">Program Mahasiwa</a>
+                    <a href="listkm.php">Dosen KM</a>
                 </li>
+                <!-- <li>
+                    <a href="listProgram.php">Daftar Program</a>
+                </li> -->
                 <li>
-                    <a href="#">Dosen</a>
+                    <a href="listdpl.php">Dosen</a>
                 </li>
                 <li>
                     <a href="logout.php">Logout</a>
@@ -153,7 +156,7 @@ foreach ($count_queries as $key => $count_query) {
                             <div class="card-body">
                                 <h5 class="card-title text-center">Dosen KM</h5>
                                 <h5 class="card-text text-center">Jumlah Dosen KM : <?php echo $count['dosenkm'] ?> Dosen</h5>
-                                <a href="listmhs.php" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Dosen KM</a>
+                                <a href="listkm.php" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Dosen KM</a>
                             </div>
                         </div>
                     </div>
@@ -167,6 +170,16 @@ foreach ($count_queries as $key => $count_query) {
                             </div>
                         </div>
                     </div>
+                    <!-- <div class="col">
+                        <div class="card">
+                            <img src="../images/KampusMengajar.png" class="card-img-top " alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Program</h5>
+                                <h5 class="card-text text-center">Daftar Program : <?php echo $count['program'] ?> Program</h5>
+                                <a href="listProgram.php" class="btn btn-primary d-flex justify-content-center mt-4">lihat Daftar Program</a>
+                            </div>
+                        </div>
+                    </div> -->
 
 
                 </div>

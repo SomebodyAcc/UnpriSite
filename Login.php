@@ -28,14 +28,8 @@
             <div class="cardmainlog">
                 <img src="images/Kaprodi.jpg" alt="Role 4">
                 <h2>Kaprodi</h2>
-                <p>Masuk Sebagai Dosen Administrasi Akademik</p>
+                <p>Masuk Sebagai Kepala Program Studi</p>
                 <button onclick="location.href='kaprodi/login.php'">Login kaprodi</button>
-            </div>
-            <div class="cardmainlog">
-                <img src="images/Kaprodi.jpg" alt="Role 4">
-                <h2>Kaprodi</h2>
-                <p>Masuk Sebagai Dosen Administrasi Akademik</p>
-                <button onclick="location.href='administrator/login.php'">Administrator</button>
             </div>
         </div>
     </div>

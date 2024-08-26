@@ -3,18 +3,18 @@ session_start();
 include('../includes/db.php');
 
 // Redirect if not logged in
-if (!isset($_SESSION['nipdpl'])) {
+if (!isset($_SESSION['nipkp'])) {
   header('Location: login.php');
   exit;
 }
 
 // Get kaprodi info
-$nipdpl = $_SESSION['nipdpl'];
-$sql_dpl = "SELECT * FROM dosen_dpl WHERE nipdpl= :nipdpl";
-$result_dpl = $pdo->prepare($sql_dpl);
-$result_dpl->bindParam(':nipdpl', $nipdpl);
-$result_dpl->execute();
-$dpl = $result_dpl->fetch(PDO::FETCH_ASSOC);
+$nipkp = $_SESSION['nipkp'];
+$sql_kp = "SELECT * FROM kaprodi WHERE nipkp= :nipkp";
+$result_kp = $pdo->prepare($sql_kp);
+$result_kp->bindParam(':nipkp', $nipkp);
+$result_kp->execute();
+$kp = $result_kp->fetch(PDO::FETCH_ASSOC);
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $allowedExts = ['jpg', 'jpeg', 'png'];
     if (in_array($fileExtension, $allowedExts)) {
-      $newFileName = $dpl['nama'] . '_' . date('YmdHis') . '.' . $fileExtension;
+      $newFileName = $kp['nama'] . '_' . date('YmdHis') . '.' . $fileExtension;
       $uploadFileDir = '../images/profildosen';
       $dest_path = $uploadFileDir . $newFileName;
 
@@ -50,16 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   } else {
     // Use old photo if no new photo was uploaded
-    $foto_profil = $dpl['foto_profil'];
+    $foto_profil = $kp['foto_profil'];
   }
 
   // Update information
-  $sql_update = "UPDATE dosen_dpl SET nama = :nama, email = :email, foto_profil = :foto_profil WHERE nipdpl = :nipdpl";
+  $sql_update = "UPDATE kaprodi SET nama = :nama, email = :email, foto_profil = :foto_profil WHERE nipkp = :nipkp";
   $stmt_update = $pdo->prepare($sql_update);
   $stmt_update->bindParam(':nama', $nama);
   $stmt_update->bindParam(':email', $email);
   $stmt_update->bindParam(':foto_profil', $foto_profil);
-  $stmt_update->bindParam(':nipdpl', $nipdpl);
+  $stmt_update->bindParam(':nipkp', $nipkp);
 
   if ($stmt_update->execute()) {
     $_SESSION['message'] = "Profil berhasil diperbarui.";
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <ul>
         <li><a href="dashboard.php">Beranda</a></li>
         <li><a href="../help.php">Butuh Bantuan?</a></li>
-        <li><a href="../logout.php?type=nipdpl">Logout</a></li>
+        <li><a href="../logout.php?type=nipkp">Logout</a></li>
       </ul>
     </nav>
   </header>
@@ -106,20 +106,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="col-md-3 m-1 mt-2 border border-dark border-1 rounded" style="height:100%;">
             <a class="btn btn-primary m-1" href="profil.php" role="button" style="width:100%;">Profil Dosen</a>
             <a class="btn btn-primary m-1" href="password.php" role="button" style="width:100%;">Password</a>
-            <a class="btn btn-primary m-1 disabled" href="listmhs.php" role="button" style="width:100%;">Mahasiswa Bimbingan</a>
+            <a class="btn btn-primary m-1" href="listdpl.php" role="button" style="width:100%;">Dosen DPL</a>
             <a class="btn btn-info disabled m-1" href="#" role="button" style="width:100%;">Coming soon</a>
           </div>
           <div class="col m-2 border border-dark border-1 rounded" style="background-color:#f6f5f5">
             <div class="clearfix row">
-              <img src="../images/profildosen<?php echo htmlspecialchars($dpl['foto_profil']); ?>" class="border border-dark border-1 rounded col-md-2 float-md-start m-3 ms-md-3" alt="Foto Profil" style="height: 125px; width:150px;">
+              <img src="../images/profildosen<?php echo htmlspecialchars($kp['foto_profil']); ?>" class="border border-dark border-1 rounded col-md-2 float-md-start m-3 ms-md-3" alt="Foto Profil" style="height: 125px; width:150px;">
               <div class="col">
                 <div class="mt-3">
-                  <h3 style="margin-bottom: -.5rem;"><?php echo htmlspecialchars($dpl['nama']); ?></h3>
-                  <p><?php echo htmlspecialchars($dpl['email']); ?></p>
+                  <h3 style="margin-bottom: -.2rem;"><?php echo htmlspecialchars($kp['nama']); ?></h3>
+                  <p><?php echo htmlspecialchars($kp['email']); ?></p>
                 </div>
-              </div>
-              <div class="col-md-2 position-relative " style="height: 100%; width: 25vh; right:10%;">
-                <?php include 'progressbar.php'; ?>
               </div>
             </div>
             <div class="clearfix row">
@@ -127,13 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="mb-3 row">
                   <label for="nama" class="col-sm-2 col-form-label">Nama Lengkap</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nama" name="nama" value="<?php echo htmlspecialchars($dpl['nama']); ?>" required>
+                    <input type="text" class="form-control" id="nama" name="nama" value="<?php echo htmlspecialchars($kp['nama']); ?>" required>
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="email" class="col-sm-2 col-form-label">Email</label>
                   <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($dpl['email']); ?>" required>
+                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($kp['email']); ?>" required>
                   </div>
                 </div>
                 <div class="mb-3 row">

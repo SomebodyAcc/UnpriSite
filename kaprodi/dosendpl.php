@@ -93,7 +93,34 @@ $sql_get_dpl_mahasiswa_program = "
 $stmt_get_dpl_mahasiswa_program = $pdo->query($sql_get_dpl_mahasiswa_program);
 $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_ASSOC);
 
+// Query untuk mendapatkan mahasiswa yang dibimbing oleh dosen berdasarkan id_dosen_dpl
+$sql_get_mahasiswa_dosen = "
+    SELECT m.id_mahasiswa, m.nama AS nama_mahasiswa, m.nim, m.email AS email_mahasiswa, 
+           p.nama_program, p.gambar, p.tanggal_awal, p.lama_waktu
+    FROM Mahasiswa m
+    INNER JOIN programmbkm p ON m.id_mahasiswa = p.id_mahasiswa
+    WHERE p.id_dosen_dpl = :id_dosen_dpl
+";
 
+$stmt_get_mahasiswa_dosen = $pdo->prepare($sql_get_mahasiswa_dosen);
+$stmt_get_mahasiswa_dosen->execute([':id_dosen_dpl' => $id_dosen_dpl]);
+$mahasiswa_dosen = $stmt_get_mahasiswa_dosen->fetchAll(PDO::FETCH_ASSOC);
+
+// menghitung Kegiatan
+// Query untuk menghitung total kegiatan berdasarkan id_mahasiswa dan id_dosen_dpl
+$sql_count_kegiatan = "
+    SELECT COUNT(*) AS total_kegiatan
+    FROM kegiatan k
+    INNER JOIN programmbkm p ON k.id_program = p.id_program
+    WHERE p.id_dosen_dpl = :id_dosen_dpl
+";
+
+$stmt_count_kegiatan = $pdo->prepare($sql_count_kegiatan);
+$stmt_count_kegiatan->execute([
+  ':id_dosen_dpl' => $id_dosen_dpl
+]);
+
+$total_kegiatan = $stmt_count_kegiatan->fetchColumn();
 
 ?>
 
@@ -138,7 +165,7 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
     <!-- main Start -->
     <main>
       <dic class="container">
-        <h3 class="text-center">Profil Dosen DPL </h3>
+        <h3 class="text-center">Profil Dosen <?php echo $Dosen['nama'] ?> </h3>
         <div class="container">
           <div class="row">
             <div class="col m-2 border border-dark border-1 rounded" style="background-color:#f6f5f5">
@@ -146,7 +173,7 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
                 <img src="../images/profildosen<?php echo htmlspecialchars($Dosen['foto_profil']); ?>" class="border border-dark border-1 rounded col-md-2 float-md-start m-3 ms-md-3" alt="Foto Profil" style="height: 125px; width:150px;">
                 <div class="col">
                   <div class="mt-3">
-                    <h3 style="margin-bottom: -.5rem;"><?php echo htmlspecialchars($Dosen['nama']); ?></h3>
+                    <h3 style="margin-bottom: -.1rem;"><?php echo htmlspecialchars($Dosen['nama']); ?></h3>
                     <p><?php echo htmlspecialchars($Dosen['email']); ?></p>
                   </div>
                 </div>
@@ -155,30 +182,21 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
                 </div>
               </div>
               <div class="clearfix row">
-                <form action="profil.php" method="post" enctype="multipart/form-data">
-                  <div class="mb-3 row">
-                    <label for="nama" class="col-sm-2 col-form-label">Nama Lengkap</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="nama" name="nama" value="<?php echo htmlspecialchars($Dosen['nama']); ?>" required>
+                <?php foreach ($mahasiswa_dosen as $mahasiswa): ?>
+                  <div class="card col-4 m-3" style="width: 24rem;">
+                    <img src="<?php echo htmlspecialchars($mahasiswa['gambar']); ?>" class="card-img-top" alt="Program Image">
+                    <div class="card-body">
+                      <h5 class="card-title"><?php echo htmlspecialchars($mahasiswa['nama_program']); ?></h5>
+                      <p class="card-text">Nama Mahasiswa: <?php echo htmlspecialchars($mahasiswa['nama_mahasiswa']); ?><br>
+                        NIM: <?php echo htmlspecialchars($mahasiswa['nim']); ?><br>
+                        Email: <?php echo htmlspecialchars($mahasiswa['email_mahasiswa']); ?><br>
+                        Tanggal Awal: <?php echo htmlspecialchars($mahasiswa['tanggal_awal']); ?><br>
+                        Lama Waktu: <?php echo htmlspecialchars($mahasiswa['lama_waktu']); ?></p>
+                      Jumlah Laporan: <?php echo htmlspecialchars($mahasiswa['lama_waktu']); ?></p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
                     </div>
                   </div>
-                  <div class="mb-3 row">
-                    <label for="email" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($Dosen['email']); ?>" required>
-                    </div>
-                  </div>
-                  <div class="mb-3 row">
-                    <label for="foto_profil" class="col-sm-2 col-form-label">Foto Profil</label>
-                    <div class="col-sm-10">
-                      <input type="file" class="form-control" id="foto_profil" name="foto_profil" accept=".jpg,.jpeg,.png">
-                      <div class="invalid-feedback">Hanya file JPG, JPEG, dan PNG yang diperbolehkan.</div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
-                  </div>
-                </form>
+                <?php endforeach; ?>
               </div>
             </div>
           </div>

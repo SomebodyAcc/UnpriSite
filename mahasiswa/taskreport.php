@@ -14,18 +14,18 @@ function getUserIdFromNim($pdo, $nim)
     $sql = "SELECT id_mahasiswa FROM Mahasiswa WHERE nim = :nim";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':nim' => $nim]);
-    $result = $stmt->fetchColumn();
-    return $result;
+    return $stmt->fetchColumn();
 }
 
 // Fetch current user's data
 $nim = $_SESSION['nim'];
 $id_mahasiswa = getUserIdFromNim($pdo, $nim);
-$nim = $_SESSION['nim'];
+
 $sql_mahasiswa = "SELECT * FROM Mahasiswa WHERE nim = :nim";
 $stmt_mahasiswa = $pdo->prepare($sql_mahasiswa);
 $stmt_mahasiswa->execute([':nim' => $nim]);
 $mhs = $stmt_mahasiswa->fetch(PDO::FETCH_ASSOC);
+
 // Redirect if id_program is not set
 if (!isset($_GET['id_program'])) {
     header('Location: dashboard.php');
@@ -67,32 +67,46 @@ $dosenkpr = $stmt_dosenkpr->fetch(PDO::FETCH_ASSOC);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST['description'];
     $taskDate = $_POST['taskDate'];
-    $imagePath = ''; // Initialize empty path
+    $imagePath = null; // Initialize as null
 
     // File upload handling
-    if ($_FILES['image']['name']) {
-        $targetDir = "uploads/";
+    if (!empty($_FILES['image']['name'])) {
+        $targetDir = "../uploads/";
         $fileName = basename($_FILES["image"]["name"]);
-        $targetFilePath = $targetDir . $fileName;
-        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
         $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
 
         if (in_array($fileType, $allowedTypes)) {
+            // Generate new file name
+            $studentNamePrefix = substr($mhs['nama'], 0, 3); // First 3 letters of student's name
+            $formattedDate = date('Ymd'); // Current date in YYYYMMDD format
+            $newFileName = "{$studentNamePrefix}_{$formattedDate}.{$fileType}";
+            $targetFilePath = $targetDir . $newFileName;
+
+            // Debugging info
+            echo "Target file path: " . htmlspecialchars($targetFilePath) . "<br>";
+
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
-                $imagePath = $targetFilePath;
+                $imagePath = $newFileName;
+                echo "File uploaded successfully. New file name: " . htmlspecialchars($imagePath) . "<br>";
             } else {
-                echo "Sorry, there was an error uploading your file.";
-                exit;
+                echo "Sorry, there was an error uploading your file.<br>";
             }
         } else {
-            echo "Sorry, only JPG, JPEG, PNG, GIF files are allowed.";
-            exit;
+            echo "Sorry, only JPG, JPEG, PNG, GIF files are allowed.<br>";
         }
+    } else {
+        echo "No file uploaded.<br>";
+    }
+
+    // Check if $imagePath is still null
+    if ($imagePath === null) {
+        echo "Image path is null.<br>";
     }
 
     // Prepare and execute SQL insert
-    $sql_insert = "INSERT INTO Kegiatan (id_mahasiswa, id_dosen_kampusmerdeka, id_dosen_dpl, id_kaprodi, deskripsi, id_program, tanggal, foto) 
-                 VALUES (:id_mahasiswa, :id_dosen_kampusmerdeka, :id_dosen_dpl, :id_kaprodi, :description, :id_program, :taskDate, :imagePath)";
+    $sql_insert = "INSERT INTO Kegiatan (id_mahasiswa, id_dosen_kampusmerdeka, id_dosen_dpl, id_kaprodi, deskripsi, id_program, tanggal, foto, uploadat) 
+                   VALUES (:id_mahasiswa, :id_dosen_kampusmerdeka, :id_dosen_dpl, :id_kaprodi, :description, :id_program, :taskDate, :imagePath, NOW())";
     $stmt_insert = $pdo->prepare($sql_insert);
     $stmt_insert->execute([
         ':id_mahasiswa' => $id_mahasiswa,
@@ -166,26 +180,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="hidden" name="id_dosen_dpl" value="<?php echo htmlspecialchars($dosendpl['id_dosen_dpl']); ?>">
             <input type="hidden" name="id_kaprodi" value="<?php echo htmlspecialchars($dosenkpr['id_kaprodi']); ?>">
             <input type="hidden" name="id_program" value="<?php echo htmlspecialchars($program['id_program']); ?>">
-            <label class="form-label">Program :</label>
-            <input class="form-control" type="text" value="<?php echo htmlspecialchars($program['nama_program']); ?>" aria-label="Disabled input example" disabled readonly>
-            <label class="form-label">Nama DPL:</label>
-            <input class="form-control" type="text" value="<?php echo htmlspecialchars($dosendpl['nama']); ?>" aria-label="Disabled input example" disabled readonly>
-            <label class="form-label">Nama Dosen KM:</label>
-            <input class="form-control" type="text" value="<?php echo htmlspecialchars($dosenKM['nama']); ?>" aria-label="Disabled input example" disabled readonly>
-            <label class="form-label">Nama Kaprodi:</label>
-            <input class="form-control" type="text" value="<?php echo htmlspecialchars($dosenkpr['nama']); ?>" aria-label="Disabled input example" disabled readonly>
-            <div class="form-group">
-                <label for="image">Unggah Foto (Opsional):</label><br>
-                <input type="file" id="image" name="image">
-            </div>
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Kirim" class="btn btn-primary">
-            </div>
+            <label class="form-label">Unggah Foto Kegiatan:</label>
+            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+
+            <button type="submit" class="btn btn-primary mt-3">Kirim</button>
         </form>
     </main>
 
-    <script src="../js/script.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

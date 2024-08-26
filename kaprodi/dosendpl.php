@@ -15,6 +15,25 @@ $stmt_Kaprodi = $pdo->prepare($sql_Kaprodi);
 $stmt_Kaprodi->execute([':nipkp' => $nipkp]);
 $Kaprodi = $stmt_Kaprodi->fetch(PDO::FETCH_ASSOC);
 
+//mengambil data dosen DPL
+if (!isset($_GET['id_dosen_dpl'])) {
+  header('Location: listdpl.php');
+  exit;
+}
+
+$id_dosen_dpl =  $_GET['id_dosen_dpl'];
+// Query database untuk mengambil data berdasarkan id_dosen_dpl
+$sql_Dosen = "SELECT * FROM dosen_dpl WHERE id_dosen_dpl = :id_dosen_dpl";
+$stmt_Dosen = $pdo->prepare($sql_Dosen);
+$stmt_Dosen->execute([':id_dosen_dpl' => $id_dosen_dpl]);
+$Dosen = $stmt_Dosen->fetch(PDO::FETCH_ASSOC);
+
+// Jika tidak ada data yang ditemukan, arahkan pengguna ke dashboard.php
+if (!$Dosen) {
+  header('Location: dashboard.php');
+  exit;
+}
+
 // Queries untuk data-data yang diperlukan
 $queries = [
   "mahasiswa" => "SELECT * FROM mahasiswa",
@@ -73,6 +92,9 @@ $sql_get_dpl_mahasiswa_program = "
 
 $stmt_get_dpl_mahasiswa_program = $pdo->query($sql_get_dpl_mahasiswa_program);
 $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -85,33 +107,18 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
   <meta name="description" content="bootcatch sidebar is simple single page template with sidebar based on bootstrap, it's starter template for admin template - thanks :)">
   <meta name="author" content="">
 
-  <title>Simple Sidebar - Bootcatch Template</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <title>Profil Dosen <?php echo $Dosen['nama'] ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <title>Dashboard dpl</title>
   <!-- material icons cdn -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
-
-  <!-- Custom styles for this template -->
-  <link href="../css/simple-sidebar.css" rel="stylesheet">
-
-  <!-- common css -->
-  <link rel="stylesheet" type="text/css" href="../css/common.css">
 </head>
 
 <body>
-  <!DOCTYPE html>
-  <html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <title>Dashboard dpl</title>
-  </head>
 
   <body>
     <header>
@@ -127,31 +134,60 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
         </ul>
       </nav>
     </header>
+    <!-- End Header -->
+    <!-- main Start -->
+    <main>
+      <dic class="container">
+        <h3 class="text-center">Profil Dosen DPL </h3>
+        <div class="container">
+          <div class="row">
+            <div class="col m-2 border border-dark border-1 rounded" style="background-color:#f6f5f5">
+              <div class="clearfix row">
+                <img src="../images/profildosen<?php echo htmlspecialchars($Dosen['foto_profil']); ?>" class="border border-dark border-1 rounded col-md-2 float-md-start m-3 ms-md-3" alt="Foto Profil" style="height: 125px; width:150px;">
+                <div class="col">
+                  <div class="mt-3">
+                    <h3 style="margin-bottom: -.5rem;"><?php echo htmlspecialchars($Dosen['nama']); ?></h3>
+                    <p><?php echo htmlspecialchars($Dosen['email']); ?></p>
+                  </div>
+                </div>
+                <div class="col-md-2 position-relative " style="height: 100%; width: 25vh; right:10%;">
+                  <?php include 'progressbar.php'; ?>
+                </div>
+              </div>
+              <div class="clearfix row">
+                <form action="profil.php" method="post" enctype="multipart/form-data">
+                  <div class="mb-3 row">
+                    <label for="nama" class="col-sm-2 col-form-label">Nama Lengkap</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="nama" name="nama" value="<?php echo htmlspecialchars($Dosen['nama']); ?>" required>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($Dosen['email']); ?>" required>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <label for="foto_profil" class="col-sm-2 col-form-label">Foto Profil</label>
+                    <div class="col-sm-10">
+                      <input type="file" class="form-control" id="foto_profil" name="foto_profil" accept=".jpg,.jpeg,.png">
+                      <div class="invalid-feedback">Hanya file JPG, JPEG, dan PNG yang diperbolehkan.</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </dic>
 
-    <table class="table  container table-bordered border-success border-2 mt-3">
-      <h3 class="text-center">Daftar Mahasiswa</h3>
-      <thead>
-        <tr class="text-center">
-          <th scope="col">NIP Dosen</th>
-          <th scope="col">Nama Dosen</th>
-          <th scope="col">Anggota Mahasiswa</th>
-          <th scope="col">Cek dosen</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($dpl_mahasiswa_program as $row) : ?>
-          <tr class="text-center">
-            <td><?php echo $row['nipdpl']; ?></td>
-            <td><?php echo $row['nama_dpl']; ?></td>
-            <td><?php echo $row['nama_mahasiswa']; ?></td>
 
-            <td><a class="btn btn-primary" href="dosendpl.php?id_dosen_dpl=<?php echo $row['id_dosen_dpl']; ?>" role="button">cek</a></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
 
-    </table>
-    </div>
+    </main>
     <!-- /#main-content -->
 
 
@@ -169,4 +205,4 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
 
   </body>
 
-  </html>
+</html>

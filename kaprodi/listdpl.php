@@ -79,94 +79,68 @@ $dpl_mahasiswa_program = $stmt_get_dpl_mahasiswa_program->fetchAll(PDO::FETCH_AS
 <html lang="en">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="bootcatch sidebar is simple single page template with sidebar based on bootstrap, it's starter template for admin template - thanks :)">
-  <meta name="author" content="">
-
-  <title>Simple Sidebar - Bootcatch Template</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="../css/bootstrap.min.css" rel="stylesheet">
-  <!-- material icons cdn -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" />
-
-  <!-- Custom styles for this template -->
-  <link href="../css/simple-sidebar.css" rel="stylesheet">
-
-  <!-- common css -->
-  <link rel="stylesheet" type="text/css" href="../css/common.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <title>Dashboard dpl</title>
 </head>
 
 <body>
-  <!DOCTYPE html>
-  <html lang="en">
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="../images/logoUnpri.png" alt="logo Unpri">
+      </div>
+      <ul>
+        <li><a href="dashboard.php">Beranda</a></li>
+        <li><a href="../help.php">Butuh Bantuan?</a></li>
+        <li><a href="profil.php">Profil Dosen</a></li>
+        <li><a href="../logout.php?type=nipdpl">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <title>Dashboard dpl</title>
-  </head>
-
-  <body>
-    <header>
-      <nav class="navbar">
-        <div class="logo">
-          <img src="../images/logoUnpri.png" alt="logo Unpri">
-        </div>
-        <ul>
-          <li><a href="dashboard.php">Beranda</a></li>
-          <li><a href="../help.php">Butuh Bantuan?</a></li>
-          <li><a href="profil.php">Profil Dosen</a></li>
-          <li><a href="../logout.php?type=nipdpl">Logout</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <table class="table  container table-bordered border-success border-2 mt-3">
-      <h3 class="text-center">Daftar Mahasiswa</h3>
-      <thead>
+  <table class="table  container table-bordered border-success border-2 mt-3">
+    <h3 class="text-center">Daftar Dosen</h3>
+    <thead>
+      <tr class="text-center">
+        <th scope="col">NIP Dosen</th>
+        <th scope="col">Nama Dosen</th>
+        <th scope="col">Anggota Mahasiswa</th>
+        <th scope="col">Cek dosen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($dpl_mahasiswa_program as $row) : ?>
         <tr class="text-center">
-          <th scope="col">NIP Dosen</th>
-          <th scope="col">Nama Dosen</th>
-          <th scope="col">Anggota Mahasiswa</th>
-          <th scope="col">Cek dosen</th>
+          <td><?php echo $row['nipdpl']; ?></td>
+          <td><?php echo $row['nama_dpl']; ?></td>
+          <td><?php echo $row['nama_mahasiswa']; ?></td>
+
+          <td><a class="btn btn-primary" href="dosendpl.php?id_dosen_dpl=<?php echo $row['id_dosen_dpl']; ?>" role="button">cek</a></td>
         </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($dpl_mahasiswa_program as $row) : ?>
-          <tr class="text-center">
-            <td><?php echo $row['nipdpl']; ?></td>
-            <td><?php echo $row['nama_dpl']; ?></td>
-            <td><?php echo $row['nama_mahasiswa']; ?></td>
+      <?php endforeach; ?>
+    </tbody>
 
-            <td><a class="btn btn-primary" href="dosendpl.php?id_dosen_dpl=<?php echo $row['id_dosen_dpl']; ?>" role="button">cek</a></td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-
-    </table>
-    </div>
-    <!-- /#main-content -->
+  </table>
+  </div>
+  <!-- /#main-content -->
 
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="../js/jquery.min.js"></script>
-    <script src="..//bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script src="../js/jquery.min.js"></script>
+  <script src="..//bootstrap.bundle.min.js"></script>
 
-    <!-- Menu Toggle Script -->
-    <script>
-      $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#main-wrapper").toggleClass("toggled");
-      });
-    </script>
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#main-wrapper").toggleClass("toggled");
+    });
+  </script>
 
-  </body>
+</body>
 
-  </html>
+</html>

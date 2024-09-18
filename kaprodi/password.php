@@ -62,7 +62,7 @@ $kp = $result_kp->fetch(PDO::FETCH_ASSOC);
           <div class="col-md-3 m-1 mt-2 border border-dark border-1 rounded" style="height:100%;">
             <a class="btn btn-primary m-1" href="profil.php" role="button" style="width:100%;">Profil Dosen</a>
             <a class="btn btn-primary m-1" href="password.php" role="button" style="width:100%;">Password</a>
-            <a class="btn btn-primary m-1" href="listmhs.php" role="button" style="width:100%;">Dosen DPL</a>
+            <a class="btn btn-primary m-1" href="listdpl.php" role="button" style="width:100%;">Dosen DPL</a>
             <a class="btn btn-info disabled m-1" href="#" role="button" style="width:100%;">Coming soon</a>
           </div>
           <div class="col m-2 border border-dark border-1 rounded">

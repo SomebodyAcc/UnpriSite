@@ -56,11 +56,6 @@ foreach ($count_queries as $key => $count_query) {
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="bootcatch sidebar is simple single page template with sidebar based on bootstrap, it's starter template for admin template - thanks :)">
-    <meta name="author" content="">
-
-    <title>Simple Sidebar - Bootcatch Template</title>
-
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <!-- material icons cdn -->
@@ -191,7 +186,7 @@ foreach ($count_queries as $key => $count_query) {
     </div>
     <!-- /#main-content -->
 
-    </div>
+
     <!-- /#wrapper -->
 
     <!-- Bootstrap core JavaScript -->

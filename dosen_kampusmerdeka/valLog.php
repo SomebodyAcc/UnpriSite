@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <h3 class="card-title d-flex justify-content-center mb-3"><?php echo $program['nama_program'] ?></h3>
           <textarea class="card-text" readonly><?php echo $kegiatan['deskripsi'] ?></textarea>
         </div>
-        <img src="../images/KampusMengajar.png" class="card-img-bottom mb-1" alt="...">
+        <img src="../uploads/<?php echo $kegiatan['foto'] ?>" class="card-img-bottom mb-1" alt="...">
       </div>
       <div class="task-form-container">
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id_program=' . urlencode($id_program) . '&id_kegiatan=' . urlencode($id_kegiatan); ?>">
